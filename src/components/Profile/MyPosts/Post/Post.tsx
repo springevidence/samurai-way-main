@@ -1,11 +1,8 @@
 import React from 'react';
 import s from './Post.module.css';
+import {postsType} from "../../../../App";
 
-type propsTypePost = {
-    message: string
-    likesCount: number
-}
-const Post = (props: propsTypePost) => {
+const Post = (props: postsType) => {
     return (
         <div className={s.item}>
             <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="avatar"/>
