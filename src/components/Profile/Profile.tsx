@@ -1,13 +1,12 @@
 import React from 'react';
 import s from './Profile.module.css';
 import MyPosts from './MyPosts/MyPosts';
+import ProfileInfo from "./ProfileInfo/ProfileInfo";
 
 const Profile = () => {
     return (
-        <div className={s.content}>
-            <div>
-                <img src="https://images.all-free-download.com/images/graphiclarge/beach_cloud_dawn_horizon_horizontal_landscape_ocean_601821.jpg" alt="sky"/>
-            </div>
+        <div>
+            <ProfileInfo/>
             <MyPosts />
         </div>
     );
