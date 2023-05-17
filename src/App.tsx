@@ -9,10 +9,19 @@ import News from "./components/News/News";
 import Music from "./components/Music/Music";
 import Settings from "./components/Settings/Settings";
 
-export type AppTypeProps = {
+type statePropsType = {
+    state: StatesType
+}
+type StatesType = {
+    profilePage: ProfilePageTypeProps
+    messagesPage: messagesPageTypeProps
+}
+export type ProfilePageTypeProps = {
+    posts: postsType[]
+}
+export type messagesPageTypeProps = {
     dialogs: dialogsType[]
     messages: messagesType[]
-    posts: postsType[]
 }
 export type dialogsType = {
     id: number
@@ -27,15 +36,15 @@ export type postsType = {
     likesCount: number
 }
 
-const App = (props: AppTypeProps) => {
+const App = (props: statePropsType) => {
     return (
         <BrowserRouter>
             <div className="app-wrapper">
                 <Header />
                 <Navbar />
                 <div className="app-wrapper-content">
-                    <Route path="/profile" render={() => <Profile posts={props.posts}/>}/>
-                    <Route path="/dialogs" render={() => <Dialogs dialogs={props.dialogs} messages={props.messages}/>}/>
+                    <Route path="/profile" render={() => <Profile posts={props.state.profilePage.posts}/>}/>
+                    <Route path="/dialogs" render={() => <Dialogs dialogs={props.state.messagesPage.dialogs} messages={props.state.messagesPage.messages}/>}/>
                     <Route path="/new" component={News}/>
                     <Route path="/music" component={Music}/>
                     <Route path="/settings" component={Settings}/>

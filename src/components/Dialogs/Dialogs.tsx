@@ -2,7 +2,7 @@ import React from 'react';
 import s from './Dialogs.module.css'
 import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
-import {AppTypeProps, dialogsType, messagesType} from "../../App";
+import {dialogsType, messagesType} from "../../App";
 
 type DialogsPropsType = {
     dialogs: dialogsType[]
@@ -25,6 +25,11 @@ const Dialogs = (props: DialogsPropsType) => {
 
     let dialogsElements = props.dialogs.map(d => <DialogItem name={d.name} id={d.id}/>)
     let messagesElements = props.messages.map(m => <Message message={m.message} id={m.id}/>)
+    let newPostElement = React.createRef<any>() //what type?
+    let sendMessage = () => {
+        let text = newPostElement.current.value;
+        alert(text)
+    }
 
     return (
         <div>
@@ -34,6 +39,14 @@ const Dialogs = (props: DialogsPropsType) => {
                 </div>
                 <div className={s.messages}>
                     {messagesElements}
+                </div>
+            </div>
+            <div className={s.sendMessage}>
+                <div>
+                    <textarea ref={newPostElement}></textarea>
+                </div>
+                <div>
+                    <button onClick={sendMessage}>Send message</button>
                 </div>
             </div>
         </div>
