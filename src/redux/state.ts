@@ -52,7 +52,7 @@ let state: StatesType = {
 }
 
 export let addPost = (postMessage: string) => {
-    let newPost: postsType = { //what type
+    const newPost: postsType = { //what type
         id: 5,
         message: postMessage,
         likesCount: 0

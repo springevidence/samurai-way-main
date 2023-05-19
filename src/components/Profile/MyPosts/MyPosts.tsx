@@ -6,11 +6,16 @@ import {ProfilePropsType} from "../Profile";
 const MyPosts = (props: ProfilePropsType) => {
     let postsElements =
         props.posts.map(p => <Post message={p.message} likesCount={p.likesCount}/>)
-    let newPostElement = React.createRef<any>();  //what type?
+
+    let newPostElement = React.createRef<HTMLTextAreaElement>();  //what type?
     let addPost = () => {
-        let text = newPostElement.current.value;
-        props.addPost(text);
-        newPostElement.current.value = '';
+        if (newPostElement.current) {
+            let text = newPostElement.current.value;
+            props.addPost(text);
+            newPostElement.current.value = '';
+        }
+        // props.addPost(newPostElement.current ? newPostElement.current.value : ' ')
+
     }
     return (
         <div className={s.postsBlock}>My posts
@@ -25,9 +30,9 @@ const MyPosts = (props: ProfilePropsType) => {
             <div>
                 New post
             </div>
-           <div className={s.posts}>
-               {postsElements}
-           </div>
+            <div className={s.posts}>
+                {postsElements}
+            </div>
 
         </div>
     );
