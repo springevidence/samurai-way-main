@@ -7,6 +7,7 @@ import {dialogsType, messagesType} from "../../redux/state";
 type DialogsPropsType = {
     dialogs: dialogsType[]
     messages: messagesType[]
+    addMessage: () => void
 }
 const Dialogs = (props: DialogsPropsType) => {
     // let dialogs = [
@@ -23,14 +24,16 @@ const Dialogs = (props: DialogsPropsType) => {
     //     {id: 4, message: "Bye-Bye"}
     // ]
 
-    let dialogsElements = props.dialogs.map(d => <DialogItem name={d.name} id={d.id}/>)
-    let messagesElements = props.messages.map(m => <Message message={m.message} id={m.id}/>)
-    let newPostElement = React.createRef<any>() //what type?
-    let sendMessage = () => {
+    const dialogsElements = props.dialogs.map(d => <DialogItem name={d.name} id={d.id}/>)
+    const messagesElements = props.messages.map(m => <Message message={m.message} id={m.id}/>)
+    const newPostElement = React.createRef<any>() //what type?
+    const sendMessage = () => {
         let text = newPostElement.current.value;
-        alert(text)
+        props.addMessage()
     }
+    const onMessageChange = () => {
 
+    }
     return (
         <div>
             <div className={s.dialogs}>
@@ -43,7 +46,8 @@ const Dialogs = (props: DialogsPropsType) => {
             </div>
             <div className={s.sendMessage}>
                 <div>
-                    <textarea ref={newPostElement}></textarea>
+                    <textarea ref={newPostElement}
+                              onChange={onMessageChange}/>
                 </div>
                 <div>
                     <button onClick={sendMessage}>Send message</button>
