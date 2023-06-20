@@ -2,12 +2,14 @@ import React from 'react';
 import s from './Dialogs.module.css'
 import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
-import {dialogsType, messagesType} from "../../redux/state";
+import {dialogsType, messagesType, updateNewMessageText} from "../../redux/state";
 
 type DialogsPropsType = {
     dialogs: dialogsType[]
     messages: messagesType[]
     addMessage: () => void
+    newMessageText: string
+    updateNewMessageText: (newMessage: string) => void
 }
 const Dialogs = (props: DialogsPropsType) => {
     // let dialogs = [
@@ -26,13 +28,13 @@ const Dialogs = (props: DialogsPropsType) => {
 
     const dialogsElements = props.dialogs.map(d => <DialogItem name={d.name} id={d.id}/>)
     const messagesElements = props.messages.map(m => <Message message={m.message} id={m.id}/>)
-    const newPostElement = React.createRef<any>() //what type?
+    const newMessageElement = React.createRef<any>() //what type?
     const sendMessage = () => {
-        let text = newPostElement.current.value;
         props.addMessage()
     }
     const onMessageChange = () => {
-
+        const text = newMessageElement.current.value;
+        updateNewMessageText(text)
     }
     return (
         <div>
@@ -46,7 +48,8 @@ const Dialogs = (props: DialogsPropsType) => {
             </div>
             <div className={s.sendMessage}>
                 <div>
-                    <textarea ref={newPostElement}
+                    <textarea ref={newMessageElement}
+                              value={props.newMessageText}
                               onChange={onMessageChange}/>
                 </div>
                 <div>

@@ -11,7 +11,7 @@ export type ProfilePageTypeProps = {
 export type messagesPageTypeProps = {
     dialogs: dialogsType[]
     messages: messagesType[]
-    newMessage: string
+    newMessageText: string
 }
 export type dialogsType = {
     id: number
@@ -51,7 +51,7 @@ export const state: StatesType = {
             {id: 3, message: "Bye"},
             {id: 4, message: "Bye-Bye"}
         ],
-        newMessage: "Test message"
+        newMessageText: "Test message"
     }
 }
 
@@ -74,9 +74,15 @@ export const updateNewPostText = (newText: string) => {
 export const addMessage = () => {
     const newMessage: messagesType = { //what type
         id: 5,
-        message: state.messagesPage.newMessage,
+        message: state.messagesPage.newMessageText,
     }
     state.messagesPage.messages.push(newMessage)
-    state.messagesPage.newMessage = ''
+    state.messagesPage.newMessageText = ''
     rerenderEntireTree(state);
 }
+
+export const updateNewMessageText = (newMessage: string) => {
+    state.messagesPage.newMessageText = newMessage;
+    rerenderEntireTree(state);
+}
+
