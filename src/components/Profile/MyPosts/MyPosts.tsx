@@ -9,13 +9,15 @@ export const MyPosts = (props: ProfilePropsType) => {
 
     const newPostElement = React.createRef<HTMLTextAreaElement>();  //what type?
     const addPost = () => {
-            props.addPost();
+            // props.addPost();
         // props.addPost(newPostElement.current ? newPostElement.current.value : ' ')
+        props.dispatch({type: 'ADD-POST'})
     }
     const onPostChange = () => {
         if (newPostElement.current) {
             const text = newPostElement.current.value;
-            props.updateNewPostText(text)
+            // props.updateNewPostText(text)
+            props.dispatch({type: 'UPDATE-NEW-POST-TEXT', newText: text})
         }
     }
     return (
