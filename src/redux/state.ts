@@ -1,3 +1,6 @@
+import {profileReducer} from "./profile-reducer";
+import {dialogsReducer} from "./dialogs-reducer";
+
 export type StatesType = {
     profilePage: ProfilePageTypeProps
     messagesPage: messagesPageTypeProps
@@ -28,7 +31,7 @@ export type postsType = {
 export type StoreType = {
     _state: StatesType
     getState: () => StatesType
-    _callSubscriber: () => void
+    _callSubscriber: (state:StatesType) => void
     subscribe: (observer: () => void) => void
     dispatch: (action: ActionType) => void
     // addPost: () => void
@@ -41,6 +44,7 @@ export type ActionType = {
     newText?: string
     newMessage?: string
 }
+
 export const store: StoreType = {
     _state: {
         profilePage: {
@@ -50,7 +54,7 @@ export const store: StoreType = {
                 {id: 3, message: "Happy birthday!", likesCount: 7},
                 {id: 4, message: "How to learn React JS?", likesCount: 3}
             ],
-            newPostText: 'type post'
+            newPostText: ''
         },
         messagesPage: {
             dialogs: [
@@ -66,7 +70,7 @@ export const store: StoreType = {
                 {id: 3, message: "Bye"},
                 {id: 4, message: "Bye-Bye"}
             ],
-            newMessageText: "Test message"
+            newMessageText: ""
         }
     },
     getState() {
@@ -82,12 +86,10 @@ export const store: StoreType = {
     //     this._state.profilePage.newPostText = ''
     //     this._callSubscriber();
     // },
-
     // updateNewPostText(newText: string) {
     //     this._state.profilePage.newPostText = newText;
     //     this._callSubscriber();
     // },
-
     // addMessage() {
     //     const newMessage: messagesType = {
     //         id: 5,
@@ -97,7 +99,6 @@ export const store: StoreType = {
     //     this._state.messagesPage.newMessageText = ''
     //     this._callSubscriber();
     // },
-
     // updateNewMessageText(newMessage: string) {
     //     this._state.messagesPage.newMessageText = newMessage;
     //     this._callSubscriber();
@@ -109,36 +110,43 @@ export const store: StoreType = {
         this._callSubscriber = observer
     },
     dispatch(action: ActionType) {
-        if (action.type === 'ADD-POST') {
-            const newPost: postsType = { //what type
-                id: 5,
-                message: this._state.profilePage.newPostText,
-                likesCount: 0
-            }
-            this._state.profilePage.posts.unshift(newPost)
-            this._state.profilePage.newPostText = ''
-            this._callSubscriber();
-        } else if (action.type === 'UPDATE-NEW-POST-TEXT') {
-            if (action.newText != null) {
-                this._state.profilePage.newPostText = action.newText;
-            }
-            this._callSubscriber();
-        } else if (action.type === 'ADD-MESSAGE') {
-            const newMessage: messagesType = {
-                id: 5,
-                message: this._state.messagesPage.newMessageText,
-            }
-            this._state.messagesPage.messages.push(newMessage)
-            this._state.messagesPage.newMessageText = ''
-            this._callSubscriber();
-        } else if (action.type === 'UPDATE-NEW-MESSAGE-TEXT') {
-            if (action.newMessage != null) {
-                this._state.messagesPage.newMessageText = action.newMessage;
-            }
-            this._callSubscriber();
-        }
+        // if (action.type === ADD_POST) {
+        //     const newPost: postsType = { //what type
+        //         id: 5,
+        //         message: this._state.profilePage.newPostText,
+        //         likesCount: 0
+        //     }
+        //     this._state.profilePage.posts.unshift(newPost)
+        //     this._state.profilePage.newPostText = ''
+        //     this._callSubscriber();
+        // } else if (action.type === UPDATE_NEW_POST_TEXT) {
+        //     if (action.newText != null) {
+        //         this._state.profilePage.newPostText = action.newText;
+        //     }
+        //     this._callSubscriber();
+        // } else if (action.type === ADD_MESSAGE) {
+        //     const newMessage: messagesType = {
+        //         id: 5,
+        //         message: this._state.messagesPage.newMessageText,
+        //     }
+        //     this._state.messagesPage.messages.push(newMessage)
+        //     this._state.messagesPage.newMessageText = ''
+        //     this._callSubscriber();
+        // } else if (action.type === UPDATE_NEW_MESSAGE_TEXT) {
+        //     if (action.newMessage != null) {
+        //         this._state.messagesPage.newMessageText = action.newMessage;
+        //     }
+        //     this._callSubscriber();
+        // }
+        this._state.profilePage = profileReducer(this._state.profilePage, action)
+        this._state.messagesPage = dialogsReducer(this._state.messagesPage, action)
+        this._callSubscriber(this._state);
+
     }
 }
+
+
+
 // let rerenderEntireTree = (state: StatesType) => {
 //     console.log('state was changed')
 // }

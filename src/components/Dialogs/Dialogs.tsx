@@ -2,7 +2,8 @@ import React from 'react';
 import s from './Dialogs.module.css'
 import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
-import {ActionType, dialogsType, messagesType} from "../../redux/state";
+import {ActionType, dialogsType, messagesType, } from "../../redux/state";
+import {addMessageAC, updateNewMessageTextAC} from "../../redux/dialogs-reducer";
 
 type DialogsPropsType = {
     dialogs: dialogsType[]
@@ -33,13 +34,12 @@ const Dialogs = (props: DialogsPropsType) => {
     const newMessageElement = React.createRef<any>() //what type?
     const sendMessage = () => {
         // props.addMessage()
-        props.dispatch({type: 'ADD-MESSAGE'})
+        props.dispatch(addMessageAC())
     }
     const onMessageChange = () => {
         const text = newMessageElement.current.value;
         // props.updateNewMessageText(text)
-        props.dispatch({type: 'UPDATE-NEW-MESSAGE-TEXT', newMessage: text})
-
+        props.dispatch(updateNewMessageTextAC(text))
     }
     return (
         <div>
@@ -53,7 +53,8 @@ const Dialogs = (props: DialogsPropsType) => {
             </div>
             <div className={s.sendMessage}>
                 <div>
-                    <textarea ref={newMessageElement}
+                    <textarea placeholder={'Type your message'}
+                              ref={newMessageElement}
                               value={props.newMessageText}
                               onChange={onMessageChange}/>
                 </div>

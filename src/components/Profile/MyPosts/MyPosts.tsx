@@ -2,6 +2,7 @@ import React from 'react';
 import s from './MyPosts.module.css';
 import Post from "./Post/Post";
 import {ProfilePropsType} from "../Profile";
+import {addPostAC, updateNewPostTextAC} from "../../../redux/profile-reducer";
 
 export const MyPosts = (props: ProfilePropsType) => {
     const postsElements =
@@ -11,13 +12,13 @@ export const MyPosts = (props: ProfilePropsType) => {
     const addPost = () => {
             // props.addPost();
         // props.addPost(newPostElement.current ? newPostElement.current.value : ' ')
-        props.dispatch({type: 'ADD-POST'})
+        props.dispatch(addPostAC())
     }
     const onPostChange = () => {
         if (newPostElement.current) {
             const text = newPostElement.current.value;
             // props.updateNewPostText(text)
-            props.dispatch({type: 'UPDATE-NEW-POST-TEXT', newText: text})
+            props.dispatch(updateNewPostTextAC(text))
         }
     }
     return (
@@ -25,6 +26,7 @@ export const MyPosts = (props: ProfilePropsType) => {
             <div>
                 <div>
                     <textarea
+                        placeholder={'Type post'}
                         ref={newPostElement}
                         value={props.newPostText}
                         onChange={onPostChange}
