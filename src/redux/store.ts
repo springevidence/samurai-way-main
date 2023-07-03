@@ -27,7 +27,6 @@ export type postsType = {
     message: string
     likesCount: number
 }
-
 export type StoreType = {
     _state: StatesType
     getState: () => StatesType
