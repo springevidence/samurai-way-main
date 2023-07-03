@@ -1,9 +1,9 @@
-import {store} from "./redux/state";
+import {store} from "./redux/store";
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import {StatesType} from "./redux/state";
+import {StatesType} from "./redux/store";
 let rerenderEntireTree = () => {
     ReactDOM.render(
         <App

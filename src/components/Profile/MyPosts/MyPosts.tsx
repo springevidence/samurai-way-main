@@ -6,7 +6,7 @@ import {addPostAC, updateNewPostTextAC} from "../../../redux/profile-reducer";
 
 export const MyPosts = (props: ProfilePropsType) => {
     const postsElements =
-        props.posts.map(p => <Post message={p.message} likesCount={p.likesCount}/>)
+        props.posts.map((p,i) => <Post key={i} message={p.message} likesCount={p.likesCount}/>)
 
     const newPostElement = React.createRef<HTMLTextAreaElement>();  //what type?
     const addPost = () => {
