@@ -2,7 +2,24 @@ import {ActionType, messagesPageTypeProps, messagesType, StatesType} from "./sto
 
 const ADD_MESSAGE = 'ADD-MESSAGE';
 const UPDATE_NEW_MESSAGE_TEXT = 'UPDATE-NEW-MESSAGE-TEXT';
-export const dialogsReducer = (state: messagesPageTypeProps, action: ActionType) => {
+
+const initState = {
+    dialogs: [
+        {id: 1, name: "Alex"},
+        {id: 2, name: "Ivan"},
+        {id: 3, name: "Andrew"},
+        {id: 4, name: "Alexandra"},
+        {id: 5, name: "Marina"},
+    ],
+    messages: [
+        {id: 1, message: "Hello"},
+        {id: 2, message: "How are you"},
+        {id: 3, message: "Bye"},
+        {id: 4, message: "Bye-Bye"}
+    ],
+    newMessageText: ""
+}
+export const dialogsReducer = (state: messagesPageTypeProps = initState, action: ActionType) => {
     switch (action.type) {
         case ADD_MESSAGE:
             const newMessage: messagesType = {
