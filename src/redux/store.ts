@@ -1,28 +1,32 @@
-import {profileReducer} from "./profile-reducer";
-import {dialogsReducer} from "./dialogs-reducer";
+import {
+    addPostActionType,
+    profileReducer, updateNewPostTextActionType,
+} from "./profile-reducer";
+import {addMessageActionType, dialogsReducer, updateNewMessageTextActionType} from "./dialogs-reducer";
 
+export type ActionType = addPostActionType | updateNewPostTextActionType | addMessageActionType | updateNewMessageTextActionType
 export type StatesType = {
     profilePage: ProfilePageTypeProps
-    messagesPage: messagesPageTypeProps
+    messagesPage: MessagesPageTypeProps
 }
 export type ProfilePageTypeProps = {
-    posts: postsType[]
+    posts: PostsType[]
     newPostText: string
 }
-export type messagesPageTypeProps = {
-    dialogs: dialogsType[]
-    messages: messagesType[]
+export type MessagesPageTypeProps = {
+    dialogs: DialogsType[]
+    messages: MessagesType[]
     newMessageText: string
 }
-export type dialogsType = {
+export type DialogsType = {
     id: number
     name: string
 }
-export type messagesType = {
+export type MessagesType = {
     id: number
     message: string
 }
-export type postsType = {
+export type PostsType = {
     id: number
     message: string
     likesCount: number
@@ -32,18 +36,8 @@ export type StoreType = {
     getState: () => StatesType
     _callSubscriber: (state:StatesType) => void
     subscribe: (observer: () => void) => void
-    dispatch: (action: ActionType) => void
-    // addPost: () => void
-    // updateNewPostText: (newText: string) => void
-    // addMessage: () => void
-    // updateNewMessageText: (newMessage: string) => void
+    dispatch: (action: addPostActionType | updateNewPostTextActionType | addMessageActionType | updateNewMessageTextActionType) => void
 }
-export type ActionType = {
-    type: string
-    newText?: string
-    newMessage?: string
-}
-
 export const store: StoreType = {
     _state: {
         profilePage: {
@@ -108,7 +102,7 @@ export const store: StoreType = {
     subscribe(observer: () => void) {
         this._callSubscriber = observer
     },
-    dispatch(action: ActionType) {
+    dispatch(action:addPostActionType | updateNewPostTextActionType | addMessageActionType | updateNewMessageTextActionType ) {
         // if (action.type === ADD_POST) {
         //     const newPost: postsType = { //what type
         //         id: 5,
@@ -140,7 +134,6 @@ export const store: StoreType = {
         this._state.profilePage = profileReducer(this._state.profilePage, action)
         this._state.messagesPage = dialogsReducer(this._state.messagesPage, action)
         this._callSubscriber(this._state);
-
     }
 }
 

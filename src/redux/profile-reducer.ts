@@ -1,10 +1,18 @@
-import {ActionType, messagesType, postsType, ProfilePageTypeProps, StatesType} from "./store";
+import { PostsType, ProfilePageTypeProps} from "./store";
+import {addMessageActionType, updateNewMessageTextActionType} from "./dialogs-reducer";
 
-const ADD_POST = 'ADD-POST';
-const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
+// const ADD_POST = 'ADD-POST';
+// const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
 
-const initState =
-    {
+export type addPostActionType = {
+    type: 'ADD-POST'
+}
+export type updateNewPostTextActionType = {
+    type: 'UPDATE-NEW-POST-TEXT'
+    newText: string
+}
+
+const initState = {
         posts: [
             {id: 1, message: "Hey, how are you?", likesCount: 13},
             {id: 2, message: "It's my first post", likesCount: 11},
@@ -13,11 +21,10 @@ const initState =
         ],
         newPostText: ''
     }
-
-export const profileReducer = (state: ProfilePageTypeProps = initState, action: ActionType) => {
+export const profileReducer = (state: ProfilePageTypeProps = initState, action: addPostActionType | updateNewPostTextActionType | addMessageActionType | updateNewMessageTextActionType) => {
     switch (action.type) {
-        case ADD_POST:
-            const newPost: postsType = { //what type
+        case 'ADD-POST':
+            const newPost: PostsType = { //what type
                 id: 5,
                 message: state.newPostText,
                 likesCount: 0
@@ -25,7 +32,7 @@ export const profileReducer = (state: ProfilePageTypeProps = initState, action: 
             state.posts.unshift(newPost)
             state.newPostText = ''
             return state;
-        case UPDATE_NEW_POST_TEXT:
+        case 'UPDATE-NEW-POST-TEXT':
             if (action.newText != null) {
                 state.newPostText = action.newText;
             }
@@ -35,8 +42,11 @@ export const profileReducer = (state: ProfilePageTypeProps = initState, action: 
     }
 }
 
-export const addPostAC = () => ({type: ADD_POST})
-export const updateNewPostTextAC = (text: string) => ({
-    type: UPDATE_NEW_POST_TEXT,
-    newText: text
+export const addPostAC = (): addPostActionType => ({
+    type: 'ADD-POST'
 })
+export const updateNewPostTextAC = (text: string): updateNewPostTextActionType => ({
+    type: 'UPDATE-NEW-POST-TEXT',
+    newText: text
+}
+)

@@ -1,7 +1,16 @@
-import {ActionType, messagesPageTypeProps, messagesType, StatesType} from "./store";
+import {MessagesPageTypeProps, MessagesType} from "./store";
+import {addPostActionType, updateNewPostTextActionType} from "./profile-reducer";
 
 const ADD_MESSAGE = 'ADD-MESSAGE';
 const UPDATE_NEW_MESSAGE_TEXT = 'UPDATE-NEW-MESSAGE-TEXT';
+
+export type addMessageActionType = {
+    type: 'ADD-MESSAGE'
+}
+export type updateNewMessageTextActionType = {
+    type: 'UPDATE-NEW-MESSAGE-TEXT'
+    newMessage: string
+}
 
 const initState = {
     dialogs: [
@@ -19,10 +28,10 @@ const initState = {
     ],
     newMessageText: ""
 }
-export const dialogsReducer = (state: messagesPageTypeProps = initState, action: ActionType) => {
+export const dialogsReducer = (state: MessagesPageTypeProps = initState, action: addPostActionType | updateNewPostTextActionType | addMessageActionType | updateNewMessageTextActionType) => {
     switch (action.type) {
         case ADD_MESSAGE:
-            const newMessage: messagesType = {
+            const newMessage: MessagesType = {
                 id: 5,
                 message: state.newMessageText,
             }
@@ -39,9 +48,10 @@ export const dialogsReducer = (state: messagesPageTypeProps = initState, action:
             return state;
     }
 }
-export const addMessageAC = () => ({type: ADD_MESSAGE})
+export const addMessageAC = (): addMessageActionType => ({type: ADD_MESSAGE})
 
-export const updateNewMessageTextAC = (text: string) => ({
+export const updateNewMessageTextAC = (text: string): updateNewMessageTextActionType => ({
     type: UPDATE_NEW_MESSAGE_TEXT,
     newMessage: text
-})
+} as const
+)
