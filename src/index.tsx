@@ -5,20 +5,17 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import {StatesType} from "./redux/store";
+import {Provider} from "react-redux";
+
 let rerenderEntireTree = (state: StatesType) => {
     ReactDOM.render(
-        <App state={state}
-            dispatch={store.dispatch.bind(store)}
-            // state={store.getState}
-            // state={state}
-             // addPost={store.addPost.bind(store)}
-             // updateNewPostText={store.updateNewPostText.bind(store)}
-             // addMessage={store.addMessage.bind(store)}
-             // updateNewMessageText={store.updateNewMessageText.bind(store)}
-        />,
+        <Provider store={store}>
+            <App/>
+        </Provider>
+        ,
         document.getElementById('root'));
 }
-    rerenderEntireTree(store.getState());
+rerenderEntireTree(store.getState());
 store.subscribe(() => {
     let state = store.getState();
     rerenderEntireTree(state)

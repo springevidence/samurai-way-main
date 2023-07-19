@@ -4,10 +4,10 @@ import {PostsType, StoreType} from "../../redux/store";
 import {MyPostsContainer} from "./MyPosts/MyPostsContainer";
 
 export type ProfilePropsType = {
-    posts: PostsType[]
-    addPost: () => void
-    newPostText: string
-    updateNewPostText: (newText: string) => void
+    // posts: PostsType[]
+    // addPost: () => void
+    // newPostText: string
+    // updateNewPostText: (newText: string) => void
     store: StoreType
 }
 const Profile = (props: ProfilePropsType) => {
