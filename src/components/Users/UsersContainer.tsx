@@ -9,6 +9,7 @@ import {
     unfollowAC,
     unfollowActionType
 } from "../../redux/users-reducer";
+import {UsersClass} from "./UsersClass";
 
 const mapStateToProps = (state: StatesType) => {
     return {
@@ -30,4 +31,4 @@ const mapDispatchToProps = (dispatch: (action:unfollowActionType | followActionT
     }
 
 }
-export const UsersContainer = connect(mapStateToProps, mapDispatchToProps)(Users);
+export const UsersContainer = connect(mapStateToProps, mapDispatchToProps)(UsersClass);
