@@ -1,13 +1,21 @@
 import {
-    addPostActionType,
-    profileReducer, updateNewPostTextActionType,
+    addPostActionType, updateNewPostTextActionType,
 } from "./profile-reducer";
-import {addMessageActionType, dialogsReducer, updateNewMessageTextActionType} from "./dialogs-reducer";
+import {addMessageActionType, updateNewMessageTextActionType} from "./dialogs-reducer";
 
 export type ActionType = addPostActionType | updateNewPostTextActionType | addMessageActionType | updateNewMessageTextActionType
 export type StatesType = {
     profilePage: ProfilePageTypeProps
     messagesPage: MessagesPageTypeProps
+    usersPage: UserType[]
+}
+export type UserType = {
+    id: number
+    photoUrl: string
+    followed: boolean
+    fullName: string
+    status: string
+    location: { city: string, country: string }
 }
 export type ProfilePageTypeProps = {
     posts: PostsType[]
@@ -38,37 +46,38 @@ export type StoreType = {
     subscribe: (observer: () => void) => void
     dispatch: (action: addPostActionType | updateNewPostTextActionType | addMessageActionType | updateNewMessageTextActionType) => void
 }
-export const store: StoreType = {
-    _state: {
-        profilePage: {
-            posts: [
-                {id: 1, message: "Hey, how are you?", likesCount: 13},
-                {id: 2, message: "It's my first post", likesCount: 11},
-                {id: 3, message: "Happy birthday!", likesCount: 7},
-                {id: 4, message: "How to learn React JS?", likesCount: 3}
-            ],
-            newPostText: ''
-        },
-        messagesPage: {
-            dialogs: [
-                {id: 1, name: "Alex"},
-                {id: 2, name: "Ivan"},
-                {id: 3, name: "Andrew"},
-                {id: 4, name: "Alexandra"},
-                {id: 5, name: "Marina"},
-            ],
-            messages: [
-                {id: 1, message: "Hello"},
-                {id: 2, message: "How are you"},
-                {id: 3, message: "Bye"},
-                {id: 4, message: "Bye-Bye"}
-            ],
-            newMessageText: ""
-        }
-    },
-    getState() {
-        return this._state
-    },
+// export const store: StoreType = {
+//     _state: {
+//         profilePage: {
+//             posts: [
+//                 {id: 1, message: "Hey, how are you?", likesCount: 13},
+//                 {id: 2, message: "It's my first post", likesCount: 11},
+//                 {id: 3, message: "Happy birthday!", likesCount: 7},
+//                 {id: 4, message: "How to learn React JS?", likesCount: 3}
+//             ],
+//             newPostText: ''
+//         },
+//         messagesPage: {
+//             dialogs: [
+//                 {id: 1, name: "Alex"},
+//                 {id: 2, name: "Ivan"},
+//                 {id: 3, name: "Andrew"},
+//                 {id: 4, name: "Alexandra"},
+//                 {id: 5, name: "Marina"},
+//             ],
+//             messages: [
+//                 {id: 1, message: "Hello"},
+//                 {id: 2, message: "How are you"},
+//                 {id: 3, message: "Bye"},
+//                 {id: 4, message: "Bye-Bye"}
+//             ],
+//             newMessageText: ""
+//         }
+//     },
+//     getState() {
+//         return this._state
+//     },
+
     // addPost() {
     //     const newPost: postsType = { //what type
     //         id: 5,
@@ -96,13 +105,13 @@ export const store: StoreType = {
     //     this._state.messagesPage.newMessageText = newMessage;
     //     this._callSubscriber();
     // },
-    _callSubscriber() {
-        console.log('state was changed')
-    },
-    subscribe(observer: () => void) {
-        this._callSubscriber = observer
-    },
-    dispatch(action:addPostActionType | updateNewPostTextActionType | addMessageActionType | updateNewMessageTextActionType ) {
+    // _callSubscriber() {
+    //     console.log('state was changed')
+    // },
+    // subscribe(observer: () => void) {
+    //     this._callSubscriber = observer
+    // },
+    // dispatch(action:addPostActionType | updateNewPostTextActionType | addMessageActionType | updateNewMessageTextActionType ) {
         // if (action.type === ADD_POST) {
         //     const newPost: postsType = { //what type
         //         id: 5,
@@ -131,13 +140,10 @@ export const store: StoreType = {
         //     }
         //     this._callSubscriber();
         // }
-        this._state.profilePage = profileReducer(this._state.profilePage, action)
-        this._state.messagesPage = dialogsReducer(this._state.messagesPage, action)
-        this._callSubscriber(this._state);
-    }
-}
-
-
+    //     this._state.profilePage = profileReducer(this._state.profilePage, action)
+    //     this._state.messagesPage = dialogsReducer(this._state.messagesPage, action)
+    //     this._callSubscriber(this._state);
+    // }
 
 // let rerenderEntireTree = (state: StatesType) => {
 //     console.log('state was changed')

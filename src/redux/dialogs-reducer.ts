@@ -31,19 +31,16 @@ const initState = {
 export const dialogsReducer = (state: MessagesPageTypeProps = initState, action: addPostActionType | updateNewPostTextActionType | addMessageActionType | updateNewMessageTextActionType) => {
     switch (action.type) {
         case ADD_MESSAGE:
-            const newMessage: MessagesType = {
-                id: 5,
-                message: state.newMessageText,
-            }
-            state.messages.push(newMessage)
-            state.newMessageText = ''
-            return state;
-
+            return {...state,
+                messages: [...state.messages, {
+                    id: 6,
+                    message: state.newMessageText,
+                }],
+                newMessageText: ''};
         case UPDATE_NEW_MESSAGE_TEXT:
-            if (action.newMessage != null) {
-                state.newMessageText = action.newMessage;
-            }
-            return state;
+            // if (action.newMessage != null) {
+            // }
+            return {...state, newMessageText: action.newMessage};
         default:
             return state;
     }

@@ -1,6 +1,5 @@
 import React from 'react';
 import s from './Post.module.css';
-import {postsType} from "../../../../App";
 
 type PostType = {
     message: string

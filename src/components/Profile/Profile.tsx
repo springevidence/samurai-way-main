@@ -3,14 +3,14 @@ import ProfileInfo from "./ProfileInfo/ProfileInfo";
 import {PostsType, StoreType} from "../../redux/store";
 import {MyPostsContainer} from "./MyPosts/MyPostsContainer";
 
-export type ProfilePropsType = {
-    // posts: PostsType[]
-    // addPost: () => void
-    // newPostText: string
-    // updateNewPostText: (newText: string) => void
-    store: StoreType
-}
-const Profile = (props: ProfilePropsType) => {
+// export type ProfilePropsType = {
+//     // posts: PostsType[]
+//     // addPost: () => void
+//     // newPostText: string
+//     // updateNewPostText: (newText: string) => void
+//     store: StoreType
+// }
+const Profile = () => {
     // let posts = [
     //     {message: "Hey, how are you?", likesCount: 13},
     //     {message: "It's my first post", likesCount: 11},
@@ -26,7 +26,7 @@ const Profile = (props: ProfilePropsType) => {
             {/*         updateNewPostText={props.updateNewPostText}*/}
             {/*         addPost={props.addPost}*/}
             {/*/>*/}
-            <MyPostsContainer store={props.store}/>
+            <MyPostsContainer/>
         </div>
     );
 };

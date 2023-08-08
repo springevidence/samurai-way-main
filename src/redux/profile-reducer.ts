@@ -11,7 +11,6 @@ export type updateNewPostTextActionType = {
     type: 'UPDATE-NEW-POST-TEXT'
     newText: string
 }
-
 const initState = {
         posts: [
             {id: 1, message: "Hey, how are you?", likesCount: 13},
@@ -24,19 +23,18 @@ const initState = {
 export const profileReducer = (state: ProfilePageTypeProps = initState, action: addPostActionType | updateNewPostTextActionType | addMessageActionType | updateNewMessageTextActionType) => {
     switch (action.type) {
         case 'ADD-POST':
-            const newPost: PostsType = { //what type
-                id: 5,
-                message: state.newPostText,
-                likesCount: 0
-            }
-            state.posts.unshift(newPost)
-            state.newPostText = ''
-            return state;
+            return {...state,
+                posts: [{
+                    id: 5,
+                    message: state.newPostText,
+                    likesCount: 0
+                }, ...state.posts],
+                newPostText: ''};
+
         case 'UPDATE-NEW-POST-TEXT':
-            if (action.newText != null) {
-                state.newPostText = action.newText;
-            }
-            return state;
+            // if (action.newText != null) {
+            // }
+            return {...state, newPostText: action.newText};
         default:
             return state;
     }
