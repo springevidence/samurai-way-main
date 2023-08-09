@@ -1,22 +1,28 @@
 import React from 'react';
-import {UserType} from "../../redux/store";
 import axios from "axios";
+import {UsersMapPropsType} from "./UsersContainer";
+import style from "./Users.module.css";
 
-export type UsersPropsType = {
-    users: UserType[]
-    follow: (userId: number) => void
-    unfollow: (userId: number) => void
-    setUsers: (users: UserType[]) => void
-}
-export const Users = (props: UsersPropsType) => {
-    if (props.users.length === 0) {
-        axios.get('https://social-network.samuraijs.com/api/1.0/users')
+
+export const Users = (props: UsersMapPropsType) => {
+    if (props.usersPage.users.length === 0) {
+        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${props.currentPage}&count=${props.pageSize}`)
             .then(res => {
                 props.setUsers(res.data.items)
             })
     }
+    let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize)
+    let pages = []
+    for (let i = 1; i <= pagesCount; i++) {
+        pages.push(i)
+    }
     return <div>
-        {props.users.map(u => <div key={u.id}>
+        <div>
+            {pages.map(p => {
+                return <span className={props.currentPage === p ? style.selectedPage : ''}>{p}</span>
+            })}
+        </div>
+        {props.usersPage.users.map(u => <div key={u.id}>
             <span>
                 <div>
                     <img src={u.photos}/>

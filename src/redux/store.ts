@@ -1,7 +1,7 @@
 import {
     addPostActionType, updateNewPostTextActionType,
 } from "./profile-reducer";
-import {addMessageActionType, updateNewMessageTextActionType} from "./dialogs-reducer";
+import {addMessageActionType, MessagesPageTypeProps, updateNewMessageTextActionType} from "./dialogs-reducer";
 
 export type ActionType = addPostActionType | updateNewPostTextActionType | addMessageActionType | updateNewMessageTextActionType
 export type StatesType = {
@@ -21,19 +21,21 @@ export type ProfilePageTypeProps = {
     posts: PostsType[]
     newPostText: string
 }
-export type MessagesPageTypeProps = {
-    dialogs: DialogsType[]
-    messages: MessagesType[]
-    newMessageText: string
-}
-export type DialogsType = {
-    id: number
-    name: string
-}
-export type MessagesType = {
-    id: number
-    message: string
-}
+// export type MessagesPageTypeProps = {
+//     dialogs: DialogsType[]
+//     messages: MessagesType[]
+//     newMessageText: string
+// }
+
+// export type DialogsType = {
+//     id: number
+//     name: string
+// }
+
+// export type MessagesType = {
+//     id: number
+//     message: string
+// }
 export type PostsType = {
     id: number
     message: string

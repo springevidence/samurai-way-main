@@ -1,0 +1,11 @@
+.selectedPage {
+    font-weight: bold;
+    cursor: pointer;
+}
+.page {
+    cursor: pointer;
+}
+.photo {
+    width: 150px;
+    height: 100px;
+}
