@@ -3,6 +3,7 @@ import style from "./Users.module.css";
 import {UserType} from "../../redux/store";
 import {v1} from "uuid";
 import userPhoto from '../../image/user_img.png'
+import {NavLink} from "react-router-dom";
 
 type UsersComponentPropsType = {
     onPageChanged: (page: number) => void
@@ -30,7 +31,10 @@ const UsersComponent = (props: UsersComponentPropsType) => {
             {props.users.map(u => <div key={u.id}>
             <span>
                 <div>
-                    <img className={style.photo} src={userPhoto} alt={'users photo'}/>
+                    <NavLink to={'/profile/' + u.id}>
+                         <img className={style.photo} src={userPhoto} alt={'users photo'}/>
+                    </NavLink>
+
                 </div>
                 <div>
                     {u.followed

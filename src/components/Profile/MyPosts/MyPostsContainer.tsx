@@ -18,6 +18,7 @@ import {
 type MyPostsContainerType = {
     store: StoreType
 }
+
 // export const MyPostsContainer = (props: MyPostsContainerType) => {
 //     const state = props.store.getState()
 //     const addPost = () => {

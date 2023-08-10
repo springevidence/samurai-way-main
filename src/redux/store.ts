@@ -17,7 +17,7 @@ export type UserType = {
     status: string
     // location: { city: string, country: string }
 }
-export type ProfilePageTypeProps = {
+type ProfilePageTypeProps = {
     posts: PostsType[]
     newPostText: string
 }
@@ -36,7 +36,7 @@ export type ProfilePageTypeProps = {
 //     id: number
 //     message: string
 // }
-export type PostsType = {
+type PostsType = {
     id: number
     message: string
     likesCount: number
