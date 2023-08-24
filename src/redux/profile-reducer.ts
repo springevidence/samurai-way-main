@@ -1,4 +1,61 @@
 import {addMessageActionType, updateNewMessageTextActionType} from "./dialogs-reducer";
+import {v1} from "uuid";
+
+const initState: ProfilePageTypeProps = {
+    posts: [
+        {id: 1, message: "Hey, how are you?", likesCount: 13},
+        {id: 2, message: "It's my first post", likesCount: 11},
+        {id: 3, message: "Happy birthday!", likesCount: 7},
+        {id: 4, message: "How to learn React JS?", likesCount: 3}
+    ],
+    newPostText: '',
+    profile: {aboutMe: '',
+        contacts: {
+            facebook: '',
+            website: null,
+            vk: '',
+            twitter: '',
+            instagram: '',
+            youtube: null,
+            github: '',
+            mainLink: null
+        },
+        lookingForAJob: false,
+        lookingForAJobDescription: '',
+        fullName: '',
+        userId: +v1(),
+        photos: {
+            small: '',
+            large: ''
+        }}
+    // как типизировать profile?
+}
+export const profileReducer = (state: ProfilePageTypeProps = initState, action: ActionType) => {
+    switch (action.type) {
+        case 'ADD-POST':
+            return {
+                ...state, posts: [{id: 5, message: state.newPostText, likesCount: 0}, ...state.posts], newPostText: ''};
+        case 'UPDATE-NEW-POST-TEXT':
+            return {...state, newPostText: action.newText};
+        case "SET-USER-PROFILE":
+            return {...state, profile: action.profile}
+        default:
+            return state;
+    }
+}
+
+export const addPostAC = (): addPostActionType => ({
+    type: 'ADD-POST'
+})
+export const updateNewPostTextAC = (text: string): updateNewPostTextActionType => ({
+    type: 'UPDATE-NEW-POST-TEXT',
+    newText: text
+})
+
+export const setUserProfileAC = (profile: UserProfileType): setUserProfileActionType => ({
+    type: 'SET-USER-PROFILE',
+    profile
+})
 
 export type UserProfileType = {
     aboutMe: string
@@ -40,7 +97,7 @@ export type updateNewPostTextActionType = {
 }
 export type setUserProfileActionType = {
     type: 'SET-USER-PROFILE'
-    profile: ProfilePageTypeProps
+    profile: UserProfileType
 }
 type ActionType =
     addPostActionType
@@ -48,47 +105,3 @@ type ActionType =
     | addMessageActionType
     | updateNewMessageTextActionType
     | setUserProfileActionType
-const initState = {
-    posts: [
-        {id: 1, message: "Hey, how are you?", likesCount: 13},
-        {id: 2, message: "It's my first post", likesCount: 11},
-        {id: 3, message: "Happy birthday!", likesCount: 7},
-        {id: 4, message: "How to learn React JS?", likesCount: 3}
-    ],
-    newPostText: '',
-    profile: null
-}
-export const profileReducer = (state: ProfilePageTypeProps = initState, action: ActionType) => {
-    switch (action.type) {
-        case 'ADD-POST':
-            return {
-                ...state,
-                posts: [{
-                    id: 5,
-                    message: state.newPostText,
-                    likesCount: 0
-                }, ...state.posts],
-                newPostText: ''
-            };
-
-        case 'UPDATE-NEW-POST-TEXT':
-            return {...state, newPostText: action.newText};
-        case "SET-USER-PROFILE":
-            return {...state, profile: action.profile}
-        default:
-            return state;
-    }
-}
-
-export const addPostAC = (): addPostActionType => ({
-    type: 'ADD-POST'
-})
-export const updateNewPostTextAC = (text: string): updateNewPostTextActionType => ({
-    type: 'UPDATE-NEW-POST-TEXT',
-    newText: text
-})
-
-export const setUserProfileAC = (profile: ProfilePageTypeProps): setUserProfileActionType => ({
-    type: 'SET-USER-PROFILE',
-    profile
-})

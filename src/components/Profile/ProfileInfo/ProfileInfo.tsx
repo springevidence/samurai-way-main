@@ -3,10 +3,10 @@ import s from './ProfileInfo.module.css';
 import {UserProfileType} from "../../../redux/profile-reducer";
 import Preloader from "../../common/preloader/Preloader";
 
-type ProfileInfoPropstype = {
+type ProfileInfoPropsType = {
     profile: UserProfileType        //!!!!!!!!!!!
 }
-const ProfileInfo = (props: ProfileInfoPropstype) => {
+const ProfileInfo = (props: ProfileInfoPropsType) => {
     if (!props.profile) {
         return <Preloader/>
     }
