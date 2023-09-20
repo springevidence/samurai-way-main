@@ -1,5 +1,7 @@
 import {addMessageActionType, updateNewMessageTextActionType} from "./dialogs-reducer";
 import {v1} from "uuid";
+import {AppThunk} from "./redux-store";
+import {usersApi} from "../api/api";
 
 const initState: ProfilePageTypeProps = {
     posts: [
@@ -56,6 +58,15 @@ export const setUserProfileAC = (profile: UserProfileType): setUserProfileAction
     type: 'SET-USER-PROFILE',
     profile
 })
+
+//thunk creator
+export const getUserProfileTC = (userId: number): AppThunk => {
+    return (dispatch) => {
+        usersApi.getProfile(userId).then(res => {
+            dispatch(setUserProfileAC(res.data))
+        })
+    }
+}
 
 export type UserProfileType = {
     aboutMe: string

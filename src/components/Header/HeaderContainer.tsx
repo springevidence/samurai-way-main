@@ -4,20 +4,20 @@ import {AppRootStateType} from "../../redux/redux-store";
 import axios from "axios";
 import Header from "./Header";
 import {
+    getAuthUserDataTC,
     InitAuthStateTypeProps,
     setAuthUserDataAC,
     setUserDataActionType
 } from "../../redux/auth-reducer";
+import {authApi} from "../../api/api";
+import {getUserProfileTC, setUserProfileAC} from "../../redux/profile-reducer";
 
 
 class HeaderContainer extends React.Component<UsersMapPropsType> {
     componentDidMount() {
-        axios.get<ResponseType<InitAuthStateTypeProps>>('https://social-network.samuraijs.com/api/1.0/auth/me', {withCredentials: true})
-            .then(res => {
-                if (res.data.resultCode === 0)
-                this.props.setAuthUserData(res.data.data)
-            })
+        this.props.getAuthUserData()
     }
+
     render() {
         return (
             <Header {...this.props}/>
@@ -30,12 +30,17 @@ const mapStateToProps = (state: AppRootStateType): mapStateToPropsType => ({
     isAuth: state.auth.isAuth,
     login: state.auth.login
 })
-const mapDispatchToProps = (dispatch: (action: setUserDataActionType) => void): mapDispatchToPropsType => {
-    return {
-        setAuthUserData: (data: InitAuthStateTypeProps) => {
-            dispatch(setAuthUserDataAC(data))
-        }
-    }
+// const mapDispatchToProps = (dispatch: (action: setUserDataActionType) => void): mapDispatchToPropsType => {
+//     return {
+//         setAuthUserData: (data: InitAuthStateTypeProps) => {
+//             dispatch(setAuthUserDataAC(data))
+//         }
+//
+//     }
+// }
+const MapObj = {
+    setAuthUserData: setAuthUserDataAC,
+    getAuthUserData: getAuthUserDataTC
 }
 export type ResponseType<D = {}> = {
     resultCode: number
@@ -49,7 +54,8 @@ type mapStateToPropsType = {
 }
 type mapDispatchToPropsType = {
     setAuthUserData: (data: InitAuthStateTypeProps) => void
+    getAuthUserData: () => void
 }
 export type UsersMapPropsType = mapStateToPropsType & mapDispatchToPropsType
 
-export default connect(mapStateToProps, mapDispatchToProps)(HeaderContainer );
+export default connect(mapStateToProps, MapObj)(HeaderContainer);

@@ -3,6 +3,8 @@ import s from './Dialogs.module.css'
 import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
 import {DialogsMapPropsType} from "./DialogsContainer";
+import {Navigate} from 'react-router-dom'
+
 
 const Dialogs = (props: DialogsMapPropsType) => {
     const state = props.messagesPage
@@ -16,6 +18,7 @@ const Dialogs = (props: DialogsMapPropsType) => {
         const text = e.name; // text area все запорола
         props.updateNewMessageText(text)
     }
+
     return (
         <div>
             <div className={s.dialogs}>

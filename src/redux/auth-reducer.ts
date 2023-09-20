@@ -1,3 +1,5 @@
+import {AppThunk} from "./redux-store";
+import {authApi} from "../api/api";
 
 const initState: InitAuthStateTypeProps = {
     id: null,
@@ -19,6 +21,16 @@ export const setAuthUserDataAC = (data: InitAuthStateTypeProps): setUserDataActi
     type: 'SET-USER-DATA',
     data
 })
+
+export const getAuthUserDataTC = (): AppThunk => {
+    return (dispatch) => {
+        authApi.authMe()
+            .then(res => {
+                if (res.data.resultCode === 0)
+                    dispatch(setAuthUserDataAC(res.data.data))
+            })
+    }
+}
 
 export type InitAuthStateTypeProps = { //
     id: null | number

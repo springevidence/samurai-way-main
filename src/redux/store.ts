@@ -2,12 +2,14 @@ import {
     addPostActionType, updateNewPostTextActionType,
 } from "./profile-reducer";
 import {addMessageActionType, MessagesPageTypeProps, updateNewMessageTextActionType} from "./dialogs-reducer";
+import {InitAuthStateTypeProps} from "./auth-reducer";
 
 export type ActionType = addPostActionType | updateNewPostTextActionType | addMessageActionType | updateNewMessageTextActionType
 export type StatesType = {
     profilePage: ProfilePageTypeProps
     messagesPage: MessagesPageTypeProps
     usersPage: UserType[]
+    auth: InitAuthStateTypeProps
 }
 export type UserType = {
     id: number

@@ -1,10 +1,13 @@
+import {AppThunk} from "./redux-store";
+import {followApi, usersApi} from "../api/api";
 
 const initState: InitStateType = {
     users: [],
     pageSize: 30,
     totalUsersCount: 0,
     currentPage: 1,
-    isFetching: true
+    isFetching: true,
+    followingInProgress: []
 }
 export const usersReducer = (state: InitStateType = initState, action: ActionType): InitStateType => {
     switch (action.type) {
@@ -20,11 +23,17 @@ export const usersReducer = (state: InitStateType = initState, action: ActionTyp
             return {...state, totalUsersCount: action.totalCount}
         case "TOGGLE_IS_FETCHING":
             return {...state, isFetching: action.isFetching}
+        case "TOGGLE_FOLLOWING_IN_PROGRESS":
+            return {
+                ...state, followingInProgress: action.isFetching
+                    ? [...state.followingInProgress, action.userId]
+                    : state.followingInProgress.filter(id => id !== action.userId)
+            }
         default:
             return state;
     }
 }
-
+// action creator
 export const followAC = (userId: number): followActionType => ({
     type: 'FOLLOW',
     userId
@@ -49,6 +58,48 @@ export const toggleIsFetchingAC = (isFetching: boolean): toggleIsFetchingActionT
     type: "TOGGLE_IS_FETCHING",
     isFetching
 })
+export const toggleFollowingInProgressAC = (isFetching: boolean, userId: number): toggleFollowingInProgressActionType => ({
+    type: 'TOGGLE_FOLLOWING_IN_PROGRESS',
+    isFetching,
+    userId
+})
+// thunk creator
+export const getUsersTC = (currentPage: number, pageSize: number): AppThunk => {
+    return (dispatch) => {
+        dispatch(toggleIsFetchingAC(true))
+        usersApi.getUsers(currentPage, pageSize)
+            .then(data => {
+                dispatch(toggleIsFetchingAC(false))
+                dispatch(setUsersAC(data.items))
+                dispatch(setTotalUsersCountAC(data.totalCount))
+            })
+    }
+}
+export const followTC = (userId: number): AppThunk => {
+    return (dispatch) => {
+        dispatch(toggleFollowingInProgressAC(true, userId))
+        followApi.follow(userId)
+            .then(data => {
+                if (data.resultCode === 0) {
+                    dispatch(followAC(userId))
+                }
+                dispatch(toggleFollowingInProgressAC(false, userId))
+            })
+    }
+}
+export const unfollowTC = (userId: number): AppThunk => {
+    return (dispatch) => {
+        dispatch(toggleFollowingInProgressAC(true, userId))
+        followApi.unfollow(userId)
+            .then(data => {
+                if (data.resultCode === 0) {
+                    dispatch(unfollowAC(userId))
+                }
+                dispatch(toggleFollowingInProgressAC(false, userId))
+            })
+    }
+}
+
 
 //types
 export type followActionType = {
@@ -75,12 +126,19 @@ export type toggleIsFetchingActionType = {
     type: 'TOGGLE_IS_FETCHING'
     isFetching: boolean
 }
+export type toggleFollowingInProgressActionType = {
+    type: 'TOGGLE_FOLLOWING_IN_PROGRESS'
+    isFetching: boolean
+    userId: number
+}
+
 export type InitStateType = {
     users: UserType[]
     pageSize: number
     totalUsersCount: number
     currentPage: number
     isFetching: boolean
+    followingInProgress: number[]
 }
 type UserType = {
     id: number
@@ -90,4 +148,11 @@ type UserType = {
     status: string
     // location: { city: string, country: string }
 }
-type ActionType = followActionType | unfollowActionType | setUsersActionType | setCurrentPageActionType | setTotalUsersCountActionType | toggleIsFetchingActionType
+type ActionType =
+    followActionType
+    | unfollowActionType
+    | setUsersActionType
+    | setCurrentPageActionType
+    | setTotalUsersCountActionType
+    | toggleIsFetchingActionType
+    | toggleFollowingInProgressActionType

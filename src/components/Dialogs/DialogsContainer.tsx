@@ -1,5 +1,5 @@
-import React from 'react';
-import {StatesType, UserType} from "../../redux/store";
+import React, {ComponentType} from 'react';
+import {StatesType} from "../../redux/store";
 import {
     addMessageAC,
     addMessageActionType, InitStateType,
@@ -8,6 +8,8 @@ import {
 } from "../../redux/dialogs-reducer";
 import Dialogs from "./Dialogs";
 import {connect} from "react-redux";
+import {WithAuthRedirect} from "../../hoc/withAuthRedirect";
+import {compose} from "redux";
 
 
 type mapStateToPropsType = {
@@ -21,10 +23,10 @@ type mapDispatchToPropsType = {
 export type DialogsMapPropsType = mapStateToPropsType & mapDispatchToPropsType
 const mapStateToProps = (state: StatesType): mapStateToPropsType => {
     return {
-        messagesPage: state.messagesPage
+        messagesPage: state.messagesPage,
     }
 }
-const mapDispatchToProps = (dispatch: (action:addMessageActionType | updateNewMessageTextActionType)=>void): mapDispatchToPropsType => {
+const mapDispatchToProps = (dispatch: (action:addMessageActionType | updateNewMessageTextActionType) => void): mapDispatchToPropsType => {
     return {
         addMessage: () => {
             dispatch(addMessageAC())
@@ -34,5 +36,10 @@ const mapDispatchToProps = (dispatch: (action:addMessageActionType | updateNewMe
         }
     }
 }
-const DialogsContainer = connect(mapStateToProps, mapDispatchToProps)(Dialogs);
-export default DialogsContainer;
+
+// const AuthRedirectComponent = WithAuthRedirect(Dialogs)
+// const DialogsContainer = connect(mapStateToProps, mapDispatchToProps)(AuthRedirectComponent);
+export default compose<ComponentType>(
+    connect(mapStateToProps, mapDispatchToProps),
+    WithAuthRedirect)
+(Dialogs)
