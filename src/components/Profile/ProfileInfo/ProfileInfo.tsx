@@ -6,6 +6,8 @@ import ProfileStatus from "./ProfileStatus";
 
 type ProfileInfoPropsType = {
     profile: UserProfileType        //!!!!!!!!!!!
+    status: string
+    updateStatus: (status: string) => void
 }
 const ProfileInfo = (props: ProfileInfoPropsType) => {
     if (!props.profile) {
@@ -14,14 +16,14 @@ const ProfileInfo = (props: ProfileInfoPropsType) => {
     return (
         <div>
             <div>
-                <img
-                    src="https://images.all-free-download.com/images/graphiclarge/beach_cloud_dawn_horizon_horizontal_landscape_ocean_601821.jpg"
-                    alt="sky"/>
+                {/*<img*/}
+                {/*    src="https://images.all-free-download.com/images/graphiclarge/beach_cloud_dawn_horizon_horizontal_landscape_ocean_601821.jpg"*/}
+                {/*    alt="sky"/>*/}
             </div>
             <div>
                 <img src={props.profile.photos.large} alt="user photo"/>
             </div>
-            <ProfileStatus status={'hello'}/>
+            <ProfileStatus status={props.status} updateStatus={props.updateStatus}/>
         </div>
     );
 

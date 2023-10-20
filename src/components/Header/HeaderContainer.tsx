@@ -42,7 +42,7 @@ const MapObj = {
     setAuthUserData: setAuthUserDataAC,
     getAuthUserData: getAuthUserDataTC
 }
-export type ResponseType<D = {}> = {
+export type BaseResponseType<D = {}> = {
     resultCode: number
     messages: string[]
     data: D

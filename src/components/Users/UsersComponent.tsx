@@ -2,13 +2,7 @@ import React from 'react';
 import style from "./Users.module.css";
 import {UserType} from "../../redux/store";
 import {v1} from "uuid";
-import userPhoto from '../../image/user_img.png'
 import {NavLink} from "react-router-dom";
-import axios from "axios";
-import {InitAuthStateTypeProps} from "../../redux/auth-reducer";
-import {ResponseType} from "../Header/HeaderContainer";
-import {followApi} from "../../api/api";
-import {unfollowTC} from "../../redux/users-reducer";
 
 type UsersComponentPropsType = {
     onPageChanged: (page: number) => void

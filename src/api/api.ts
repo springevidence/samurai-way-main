@@ -1,5 +1,5 @@
 import axios from "axios";
-import {ResponseType} from "../components/Header/HeaderContainer";
+import {BaseResponseType} from "../components/Header/HeaderContainer";
 import {InitAuthStateTypeProps} from "../redux/auth-reducer";
 import {UserProfileType} from "../redux/profile-reducer";
 
@@ -13,25 +13,36 @@ const instance = axios.create({
 
 export const usersApi = {
     getUsers(currentPage: number, pageSize: number) {
-        return instance.get(`users?page=${currentPage}&count=${pageSize}`).then(res => res.data)
-    },
-    getProfile(userId: number) {
-        return instance.get<UserProfileType>('https://social-network.samuraijs.com/api/1.0/profile/')
+        return instance.get(`users?page=${currentPage}&count=${pageSize}`)
+            .then(res => res.data)
     }
-
 }
+
+export const profileApi = {
+    getProfile(userId: number) {
+        return instance.get<UserProfileType>(`profile/${userId}`)
+    },
+    getStatus(userId: number){
+        return instance.get(`profile/status/${userId}`)
+    },
+    updateStatus(status: string) {
+        return instance.put<BaseResponseType>('profile/status/', {status})
+    }
+}
+
 export const followApi = {
     follow(userId: number) {
-        return instance.post<ResponseType>(`follow/${userId}`).then(res => res.data)
+        return instance.post<BaseResponseType>(`follow/${userId}`).then(res => res.data)
     },
     unfollow(userId: number) {
-        return instance.delete<ResponseType>(`follow/${userId}`).then(res => res.data)
+        return instance.delete<BaseResponseType>(`follow/${userId}`).then(res => res.data)
     },
 }
 
 export const authApi = {
     authMe() {
-        return instance.get<ResponseType<InitAuthStateTypeProps>>('auth/me')
+        return instance.get<BaseResponseType<InitAuthStateTypeProps>>('auth/me')
             // .then(res => res.data)
     }
 }
+

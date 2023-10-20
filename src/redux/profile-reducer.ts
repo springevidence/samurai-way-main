@@ -1,7 +1,7 @@
 import {addMessageActionType, updateNewMessageTextActionType} from "./dialogs-reducer";
 import {v1} from "uuid";
 import {AppThunk} from "./redux-store";
-import {usersApi} from "../api/api";
+import {profileApi} from "../api/api";
 
 const initState: ProfilePageTypeProps = {
     posts: [
@@ -29,7 +29,8 @@ const initState: ProfilePageTypeProps = {
         photos: {
             small: '',
             large: ''
-        }}
+        }},
+    status: ''
     // как типизировать profile?
 }
 export const profileReducer = (state: ProfilePageTypeProps = initState, action: ActionType) => {
@@ -41,6 +42,8 @@ export const profileReducer = (state: ProfilePageTypeProps = initState, action: 
             return {...state, newPostText: action.newText};
         case "SET-USER-PROFILE":
             return {...state, profile: action.profile}
+        case 'SET-USER-STATUS':
+            return {...state, status: action.status}
         default:
             return state;
     }
@@ -59,12 +62,37 @@ export const setUserProfileAC = (profile: UserProfileType): setUserProfileAction
     profile
 })
 
+export const setUserStatusAC = (status: string): setUserStatusActionType => ({
+    type: 'SET-USER-STATUS',
+    status
+})
 //thunk creator
 export const getUserProfileTC = (userId: number): AppThunk => {
     return (dispatch) => {
-        usersApi.getProfile(userId).then(res => {
+        profileApi.getProfile(userId).then(res => {
             dispatch(setUserProfileAC(res.data))
         })
+    }
+}
+
+export const getUserStatusTC = (userId: number): AppThunk => {
+    return (dispatch) => {
+        profileApi.getStatus(userId)
+            .then(res => {
+                console.log(res)
+                dispatch(setUserStatusAC(res.data))
+            })
+    }
+}
+
+export const updateUserStatusTC = (status: string): AppThunk => {
+    return (dispatch) => {
+        profileApi.updateStatus(status)
+            .then(res => {
+                if (res.data.resultCode === 0) {
+                    dispatch(setUserStatusAC(status))
+                }
+            })
     }
 }
 
@@ -93,6 +121,7 @@ export type ProfilePageTypeProps = {
     posts: PostsType[]
     newPostText: string
     profile: UserProfileType   //!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    status: string
 }
 export type PostsType = {
     id: number
@@ -110,9 +139,15 @@ export type setUserProfileActionType = {
     type: 'SET-USER-PROFILE'
     profile: UserProfileType
 }
+export type setUserStatusActionType = {
+    type: 'SET-USER-STATUS'
+    status: string
+}
+
 type ActionType =
     addPostActionType
     | updateNewPostTextActionType
     | addMessageActionType
     | updateNewMessageTextActionType
     | setUserProfileActionType
+    | setUserStatusActionType
