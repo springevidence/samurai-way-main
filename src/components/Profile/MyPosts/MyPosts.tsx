@@ -2,6 +2,7 @@ import React from 'react';
 import s from './MyPosts.module.css';
 import Post from "./Post/Post";
 import {PostsType} from "../../../redux/profile-reducer";
+import AddPostForm from "./Post/AddPostForm";
 
 type MyPoststype = {
     posts: PostsType[]
@@ -28,17 +29,18 @@ export const MyPosts = (props: MyPoststype) => {
     return (
         <div className={s.postsBlock}>My posts
             <div>
-                <div>
-                    <textarea
-                        placeholder={'Type post'}
-                        ref={newPostElement}
-                        value={props.newPostText}
-                        onChange={onPostChange}
-                    />
-                </div>
-                <div>
-                    <button onClick={addPost}>Add post</button>
-                </div>
+                <AddPostForm/>
+                {/*<div>*/}
+                {/*    <textarea*/}
+                {/*        placeholder={'Type post'}*/}
+                {/*        ref={newPostElement}*/}
+                {/*        value={props.newPostText}*/}
+                {/*        onChange={onPostChange}*/}
+                {/*    />*/}
+                {/*</div>*/}
+                {/*<div>*/}
+                {/*    <button onClick={addPost}>Add post</button>*/}
+                {/*</div>*/}
             </div>
             <div>
                 New post
