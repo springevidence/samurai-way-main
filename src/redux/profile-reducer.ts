@@ -10,7 +10,6 @@ const initState: ProfilePageTypeProps = {
         {id: 3, message: "Happy birthday!", likesCount: 7},
         {id: 4, message: "How to learn React JS?", likesCount: 3}
     ],
-    newPostText: '',
     profile: {aboutMe: '',
         contacts: {
             facebook: '',
@@ -31,15 +30,12 @@ const initState: ProfilePageTypeProps = {
             large: ''
         }},
     status: ''
-    // как типизировать profile?
 }
 export const profileReducer = (state: ProfilePageTypeProps = initState, action: ActionType) => {
     switch (action.type) {
         case 'ADD-POST':
             return {
-                ...state, posts: [{id: 5, message: state.newPostText, likesCount: 0}, ...state.posts], newPostText: ''};
-        case 'UPDATE-NEW-POST-TEXT':
-            return {...state, newPostText: action.newText};
+                ...state, posts: [{id: 5, message: action.newPostText, likesCount: 0}, ...state.posts]};
         case "SET-USER-PROFILE":
             return {...state, profile: action.profile}
         case 'SET-USER-STATUS':
@@ -49,13 +45,11 @@ export const profileReducer = (state: ProfilePageTypeProps = initState, action: 
     }
 }
 
-export const addPostAC = (): addPostActionType => ({
-    type: 'ADD-POST'
+export const addPostAC = (newPostText: string): addPostActionType => ({
+    type: 'ADD-POST',
+    newPostText
 })
-export const updateNewPostTextAC = (text: string): updateNewPostTextActionType => ({
-    type: 'UPDATE-NEW-POST-TEXT',
-    newText: text
-})
+
 
 export const setUserProfileAC = (profile: UserProfileType): setUserProfileActionType => ({
     type: 'SET-USER-PROFILE',
@@ -119,7 +113,6 @@ export type UserProfileType = {
 }
 export type ProfilePageTypeProps = {
     posts: PostsType[]
-    newPostText: string
     profile: UserProfileType   //!!!!!!!!!!!!!!!!!!!!!!!!!!!
     status: string
 }
@@ -130,10 +123,7 @@ export type PostsType = {
 }
 export type addPostActionType = {
     type: 'ADD-POST'
-}
-export type updateNewPostTextActionType = {
-    type: 'UPDATE-NEW-POST-TEXT'
-    newText: string
+    newPostText: string
 }
 export type setUserProfileActionType = {
     type: 'SET-USER-PROFILE'
@@ -146,7 +136,6 @@ export type setUserStatusActionType = {
 
 type ActionType =
     addPostActionType
-    | updateNewPostTextActionType
     | addMessageActionType
     | updateNewMessageTextActionType
     | setUserProfileActionType

@@ -6,12 +6,12 @@ const LoginForm = () => {
         password: string
         rememberMe: boolean
     }
-    const onSubmit = (formData: FormValues) => {
+    const onLogin = (formData: FormValues) => {
         console.log(formData)
     }
 
     return <Form
-        onSubmit={onSubmit}
+        onSubmit={onLogin}
         // validate={validate}
         render={({handleSubmit}) => (
             <form onSubmit={handleSubmit}>

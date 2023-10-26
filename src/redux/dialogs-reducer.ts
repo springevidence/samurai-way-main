@@ -1,4 +1,4 @@
-import {addPostActionType, updateNewPostTextActionType} from "./profile-reducer";
+import {addPostActionType} from "./profile-reducer";
 
 const ADD_MESSAGE = 'ADD-MESSAGE';
 const UPDATE_NEW_MESSAGE_TEXT = 'UPDATE-NEW-MESSAGE-TEXT';
@@ -24,7 +24,7 @@ export type MessagesPageTypeProps = {
     newMessageText: string
 }
 export type InitStateType = typeof initState
-type ActionType = addPostActionType | updateNewPostTextActionType | addMessageActionType | updateNewMessageTextActionType
+type ActionType = addPostActionType | addMessageActionType | updateNewMessageTextActionType
 const initState = {
     dialogs: [
         {id: 1, name: "Alex"},

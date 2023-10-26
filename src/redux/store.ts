@@ -1,10 +1,10 @@
 import {
-    addPostActionType, updateNewPostTextActionType,
+    addPostActionType
 } from "./profile-reducer";
 import {addMessageActionType, MessagesPageTypeProps, updateNewMessageTextActionType} from "./dialogs-reducer";
 import {InitAuthStateTypeProps} from "./auth-reducer";
 
-export type ActionType = addPostActionType | updateNewPostTextActionType | addMessageActionType | updateNewMessageTextActionType
+export type ActionType = addPostActionType | addMessageActionType | updateNewMessageTextActionType
 export type StatesType = {
     profilePage: ProfilePageTypeProps
     messagesPage: MessagesPageTypeProps
@@ -48,7 +48,7 @@ export type StoreType = {
     getState: () => StatesType
     _callSubscriber: (state:StatesType) => void
     subscribe: (observer: () => void) => void
-    dispatch: (action: addPostActionType | updateNewPostTextActionType | addMessageActionType | updateNewMessageTextActionType) => void
+    dispatch: (action: addPostActionType  | addMessageActionType | updateNewMessageTextActionType) => void
 }
 // export const store: StoreType = {
 //     _state: {
