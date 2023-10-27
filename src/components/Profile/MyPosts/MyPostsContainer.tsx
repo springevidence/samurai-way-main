@@ -8,7 +8,6 @@ import {StatesType, StoreType} from "../../../redux/store";
 import {connect} from "react-redux";
 import {
     addMessageActionType,
-    updateNewMessageTextActionType
 } from "../../../redux/dialogs-reducer";
 
 type MyPostsContainerType = {
@@ -21,7 +20,7 @@ const mapStateToProps = (state: StatesType) => {
         posts: state.profilePage.posts
     }
 }
-const mapDispatchToProps = (dispatch: (action: addPostActionType | addMessageActionType | updateNewMessageTextActionType)=>void) => {
+const mapDispatchToProps = (dispatch: (action: addPostActionType | addMessageActionType)=>void) => {
     return {
         addPost: (newPostText: string) => {
             dispatch(addPostAC(newPostText))

@@ -4,19 +4,15 @@ import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
 import {DialogsMapPropsType} from "./DialogsContainer";
 import {Navigate} from 'react-router-dom'
+import AddMessageForm from "./Message/AddMessageForm";
 
 
 const Dialogs = (props: DialogsMapPropsType) => {
-    const state = props.messagesPage
-    const dialogsElements = state.dialogs.map(d => <DialogItem name={d.name} key={d.id} id={d.id}/>)
-    const messagesElements = state.messages.map(m => <Message message={m.message} key={m.id} id={m.id}/>)
-    const newMessageElement = state.newMessageText
-    const sendMessage = () => {
-        props.addMessage()
-    }
-    const onMessageChange = (e: any) => {
-        const text = e.name; // text area все запорола
-        props.updateNewMessageText(text)
+
+    const dialogsElements = props.messagesPage.dialogs.map(d => <DialogItem name={d.name} key={d.id} id={d.id}/>)
+    const messagesElements = props.messagesPage.messages.map(m => <Message message={m.message} key={m.id} id={m.id}/>)
+    const sendMessage = (newMessage: string) => {
+        props.addMessage(newMessage)
     }
 
     return (
@@ -30,18 +26,16 @@ const Dialogs = (props: DialogsMapPropsType) => {
                 </div>
             </div>
             <div className={s.sendMessage}>
-                <div>
-                    <textarea placeholder={'Type your message'}
-                              // ref={newMessageElement} !!!!!!!!!!!!!
-                              value={newMessageElement}
-                              onChange={onMessageChange}/>
-                </div>
-                <div>
-                    <button onClick={sendMessage}>Send message</button>
-                </div>
+                <AddMessageForm sendMessage={sendMessage}/>
             </div>
         </div>
     );
 };
 
 export default Dialogs;
+
+
+//    const onMessageChange = (e: any) => {
+//         const text = e.name; // text area все запорола
+//         props.updateNewMessageText(text)
+//     }

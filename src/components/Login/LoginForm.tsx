@@ -1,27 +1,64 @@
 import React from 'react';
 import { Form, Field } from 'react-final-form'
+import Input from "../common/FormsValidation/FormsValidation";
 const LoginForm = () => {
     type FormValues = {
         email: string
         password: string
         rememberMe: boolean
+        isRequired: boolean
     }
+
     const onLogin = (formData: FormValues) => {
         console.log(formData)
     }
+    // const getValidator = (isRequired: boolean) =>
+    //     isRequired ? (value:string) => (value ? undefined : "Field is required") : () => {};
 
     return <Form
+        validate={values => {
+            const errors = {
+                email: '',
+                password: ''
+            }
+            if (!values.email) {
+                errors.email = 'Required'
+            }
+            if (!values.password) {
+                errors.password = 'Required'
+            }
+            return errors
+        }}
         onSubmit={onLogin}
-        // validate={validate}
         render={({handleSubmit}) => (
             <form onSubmit={handleSubmit}>
                 <div>
-                    <label>login</label>
-                    <Field name={'login'} component={'input'} placeholder={"login"}/>
+                    <Field name={'email'}
+                           // validate={getValidator(values.isRequired)}
+                           render={({input, meta})=> (
+                               <div>
+                                   <label>email</label>
+                                   <input {...input} />
+                                   {meta.touched && meta.error && <span style={{color: 'red'}}>
+                                       {meta.error}
+                                   </span>}
+                               </div>
+                           )}
+                    />
                 </div>
                 <div>
-                    <label>email</label>
-                    <Field name={'email'} component={'input'} placeholder={"email"}/>
+                    <Field name={'password'}
+                           // validate={getValidator(values.isRequired)}
+                           render={({input, meta})=> (
+                               <div>
+                                   <label>password</label>
+                                   <input {...input} />
+                                   {meta.touched && meta.error && <span style={{color: 'red'}}>
+                                       {meta.error}
+                                   </span>}
+                               </div>
+                           )}
+                    />
                 </div>
                 <div>
                     <label>remember me</label>
@@ -31,24 +68,6 @@ const LoginForm = () => {
             </form>
         )}
     />
-
-
-    // return (
-    //     <form>
-    //         <div>
-    //             <input placeholder={'login'}/>
-    //         </div>
-    //         <div>
-    //             <input placeholder={'password'}/>
-    //         </div>
-    //         <div>
-    //             <input type={'checkbox'}/> remember me
-    //         </div>
-    //         <div>
-    //             <button type={'submit'}>Login</button>
-    //         </div>
-    //     </form>
-    // );
 };
 
 export default LoginForm;

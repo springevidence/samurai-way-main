@@ -1,13 +1,9 @@
 import {addPostActionType} from "./profile-reducer";
 
 const ADD_MESSAGE = 'ADD-MESSAGE';
-const UPDATE_NEW_MESSAGE_TEXT = 'UPDATE-NEW-MESSAGE-TEXT';
 
 export type addMessageActionType = {
-    type: 'ADD-MESSAGE'
-}
-export type updateNewMessageTextActionType = {
-    type: 'UPDATE-NEW-MESSAGE-TEXT'
+    type: 'ADD-MESSAGE',
     newMessage: string
 }
 export type DialogsType = {
@@ -24,7 +20,7 @@ export type MessagesPageTypeProps = {
     newMessageText: string
 }
 export type InitStateType = typeof initState
-type ActionType = addPostActionType | addMessageActionType | updateNewMessageTextActionType
+type ActionType = addPostActionType | addMessageActionType
 const initState = {
     dialogs: [
         {id: 1, name: "Alex"},
@@ -38,8 +34,7 @@ const initState = {
         {id: 2, message: "How are you"},
         {id: 3, message: "Bye"},
         {id: 4, message: "Bye-Bye"}
-    ] as MessagesType[],
-    newMessageText: ""
+    ] as MessagesType[]
 }
 export const dialogsReducer = (state: InitStateType = initState, action: ActionType): InitStateType => {
     switch (action.type) {
@@ -48,22 +43,11 @@ export const dialogsReducer = (state: InitStateType = initState, action: ActionT
                 ...state,
                 messages: [...state.messages, {
                     id: 6,
-                    message: state.newMessageText,
+                    message: action.newMessage,
                 }],
-                newMessageText: ''
             };
-        case UPDATE_NEW_MESSAGE_TEXT:
-            // if (action.newMessage != null) {
-            // }
-            return {...state, newMessageText: action.newMessage};
         default:
             return state;
     }
 }
-export const addMessageAC = (): addMessageActionType => ({type: ADD_MESSAGE} as const)
-
-export const updateNewMessageTextAC = (text: string): updateNewMessageTextActionType => ({
-        type: UPDATE_NEW_MESSAGE_TEXT,
-        newMessage: text
-    } as const
-)
+export const addMessageAC = (newMessage: string): addMessageActionType => ({type: ADD_MESSAGE, newMessage} as const)

@@ -1,4 +1,4 @@
-import {addMessageActionType, updateNewMessageTextActionType} from "./dialogs-reducer";
+import {addMessageActionType} from "./dialogs-reducer";
 import {v1} from "uuid";
 import {AppThunk} from "./redux-store";
 import {profileApi} from "../api/api";
@@ -137,6 +137,5 @@ export type setUserStatusActionType = {
 type ActionType =
     addPostActionType
     | addMessageActionType
-    | updateNewMessageTextActionType
     | setUserProfileActionType
     | setUserStatusActionType
