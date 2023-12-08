@@ -42,7 +42,22 @@ export const followApi = {
 export const authApi = {
     authMe() {
         return instance.get<BaseResponseType<InitAuthStateTypeProps>>('auth/me')
-            // .then(res => res.data)
+
+    },
+    login (data: LoginParamsType) {
+        return instance.post<BaseResponseType<{userId: number}>>('auth/login', data)
+    },
+    logout () {
+        return instance.delete<BaseResponseType>('auth/login')
     }
 }
+
+export type LoginParamsType = {
+    email: string
+    password: string
+    rememberMe: boolean
+    captcha?: string //or boolean
+}
+
+
 

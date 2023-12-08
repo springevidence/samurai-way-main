@@ -1,45 +1,89 @@
-import {AppThunk} from "./redux-store";
-import {authApi} from "../api/api";
+import {AppRootStateType, AppThunk} from "./redux-store";
+import {authApi, LoginParamsType} from "../api/api";
+import {handleServerAppError} from "../common/utills/handle-server-app-error";
+import {ThunkAction} from "redux-thunk";
+import {AnyAction} from "redux";
 
 const initState: InitAuthStateTypeProps = {
     id: null,
     email: null,
     login: null,
-    isAuth: false
+    isAuth: false,
+    error: null
 }
+
 export const authReducer = (state: InitAuthStateTypeProps = initState, action: ActionType) => {
     switch (action.type) {
         case 'SET-USER-DATA':
-            return {...state, ...action.data, isAuth: true}
-
+            return {...state, ...action.payload}
+        case "SET-APP-ERROR":
+            return {...state, error: action.error}
         default:
             return state;
     }
 }
 
-export const setAuthUserDataAC = (data: InitAuthStateTypeProps): setUserDataActionType => ({
+// action creators
+export const setAppErrorAC = (error: null | string): setAppErrorActionType => ({
+    type: "SET-APP-ERROR" as const,
+    error
+})
+export const setAuthUserDataAC = (id: null | number, email: null | string, login: null | string, isAuth: boolean): setUserDataActionType => ({
     type: 'SET-USER-DATA',
-    data
+    payload: {id, email, login, isAuth}
 })
 
-export const getAuthUserDataTC = (): AppThunk => {
+export type ThunkType<ReturnType = Promise<any>> = ThunkAction<ReturnType, AppRootStateType, unknown, AnyAction>
+// thunk creators
+export const getAuthUserDataTC = (): ThunkType => {
     return (dispatch) => {
-        authApi.authMe()
+        return authApi.authMe()
             .then(res => {
-                if (res.data.resultCode === 0)
-                    dispatch(setAuthUserDataAC(res.data.data))
+                if (res.data.resultCode === 0) {
+                    const {id, email, login, isAuth} = res.data.data
+                    dispatch(setAuthUserDataAC(id, email, login, true))
+                }
             })
     }
 }
 
+export const loginTC = (data: LoginParamsType): AppThunk => {
+    return (dispatch) => {
+        authApi.login(data)
+            .then(res => {
+                if (res.data.resultCode === 0) {
+                    dispatch(getAuthUserDataTC())
+                }
+                else {
+                    handleServerAppError(res.data, dispatch)
+                }
+            })
+    }
+}
+
+export const logoutTC = (): AppThunk => {
+    return (dispatch) => {
+        authApi.logout()
+            .then(res => {
+                if (res.data.resultCode === 0) {
+                    dispatch(setAuthUserDataAC(null, null, null, false))
+                }
+            })
+    }
+}
 export type InitAuthStateTypeProps = { //
     id: null | number
     email: null | string
     login: null | string
     isAuth: boolean
+    error?: null | string
 }
 export type setUserDataActionType = {
     type: 'SET-USER-DATA'
-    data: InitAuthStateTypeProps
+    payload: InitAuthStateTypeProps
 }
-type ActionType = setUserDataActionType
+export type setAppErrorActionType = {
+    type: 'SET-APP-ERROR'
+    error:  null | string
+}
+type ActionType = setUserDataActionType | setAppErrorActionType

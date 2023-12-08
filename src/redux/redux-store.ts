@@ -5,13 +5,15 @@ import {usersReducer} from "./users-reducer";
 import {authReducer} from "./auth-reducer";
 import {ThunkAction} from "redux-thunk";
 import thunkMiddleware from "redux-thunk";
+import {appReducer} from "./app-reducer";
 
 
 const rootReducer = combineReducers({
     messagesPage: dialogsReducer,
     profilePage: profileReducer,
     usersPage: usersReducer,
-    auth: authReducer
+    auth: authReducer,
+    app: appReducer
 })
 
 export const store = legacy_createStore(rootReducer, applyMiddleware(thunkMiddleware))

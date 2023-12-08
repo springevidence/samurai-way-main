@@ -5,7 +5,7 @@ import style from "./Users.module.css";
 
 
 export const Users = (props: UsersMapPropsType) => {
-    if (props.usersPage.users.length === 0) {
+    if (props.users.length === 0) {
         axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${props.currentPage}&count=${props.pageSize}`)
             .then(res => {
                 props.setUsers(res.data.items)
@@ -22,7 +22,7 @@ export const Users = (props: UsersMapPropsType) => {
                 return <span onClick={()=>props.setCurrentPage(p)} className={props.currentPage === p ? style.selectedPage : ''}>{p}</span>
             })}
         </div>
-        {props.usersPage.users.map(u => <div key={u.id}>
+        {props.users.map(u => <div key={u.id}>
             <span>
                 <div>
                     <img src={u.photos}/>

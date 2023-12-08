@@ -1,61 +1,64 @@
 import React from 'react';
 import { Form, Field } from 'react-final-form'
 import Input from "../common/FormsValidation/FormsValidation";
-const LoginForm = () => {
-    type FormValues = {
-        email: string
-        password: string
-        rememberMe: boolean
-        isRequired: boolean
-    }
+import {FormValues} from "./Login";
 
-    const onLogin = (formData: FormValues) => {
-        console.log(formData)
+type LoginFormPropsType = {
+    onSubmit: (formData: FormValues) => void
+    loginError: string | null | undefined
+}
+const LoginForm = (props: LoginFormPropsType) => {
+
+    type FormErrorType = {
+        email?: string
+        password?: string
+        rememberMe?: boolean
     }
-    // const getValidator = (isRequired: boolean) =>
-    //     isRequired ? (value:string) => (value ? undefined : "Field is required") : () => {};
+    const validate = (values: FormValues ) => {
+        const error: FormErrorType = {}
+        if (!values.email) {
+            error.email = 'Field is required'
+        }
+        if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+            error.email = 'Invalid email address'
+        }
+        else if (!values.password) {
+            error.password = 'Field is required'
+        }
+        return error
+    }
 
     return <Form
-        validate={values => {
-            const errors = {
-                email: '',
-                password: ''
-            }
-            if (!values.email) {
-                errors.email = 'Required'
-            }
-            if (!values.password) {
-                errors.password = 'Required'
-            }
-            return errors
-        }}
-        onSubmit={onLogin}
-        render={({handleSubmit}) => (
+        onSubmit={props.onSubmit}
+        validate={validate}
+
+        render={({handleSubmit, submitError, error}) => (
             <form onSubmit={handleSubmit}>
                 <div>
                     <Field name={'email'}
-                           // validate={getValidator(values.isRequired)}
+                           // component={Input}
                            render={({input, meta})=> (
                                <div>
                                    <label>email</label>
                                    <input {...input} />
-                                   {meta.touched && meta.error && <span style={{color: 'red'}}>
-                                       {meta.error}
-                                   </span>}
+
+                                   {(meta.error || meta.submitError) && meta.touched && (
+                                       <span style={{color: 'red'}}>{meta.error || meta.submitError}</span>
+                                   )}
                                </div>
                            )}
                     />
                 </div>
                 <div>
                     <Field name={'password'}
-                           // validate={getValidator(values.isRequired)}
                            render={({input, meta})=> (
                                <div>
                                    <label>password</label>
-                                   <input {...input} />
-                                   {meta.touched && meta.error && <span style={{color: 'red'}}>
-                                       {meta.error}
-                                   </span>}
+                                   <input {...input} type={'password'}/>
+
+                                   {(meta.error || meta.submitError) && meta.touched && (
+                                       <span style={{color: 'red'}}>{meta.error || meta.submitError}</span>
+                                   )}
                                </div>
                            )}
                     />
@@ -64,6 +67,7 @@ const LoginForm = () => {
                     <label>remember me</label>
                     <Field name={'rememberMe'} type={'checkbox'} component={'input'}/>
                 </div>
+                {props.loginError && <div style={{color: 'red'}}>{props.loginError}</div>}
                 <button type={'submit'}>Submit</button>
             </form>
         )}

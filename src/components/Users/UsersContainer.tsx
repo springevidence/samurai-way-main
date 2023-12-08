@@ -12,10 +12,18 @@ import {AppRootStateType} from "../../redux/redux-store";
 import UsersComponent from "./UsersComponent";
 import Preloader from "../common/preloader/Preloader";
 import {usersApi} from "../../api/api";
+import {
+    getCurrentPage,
+    getFollowingInProgress,
+    getIsFetching,
+    getPageSize,
+    getTotalUsersCount,
+    getUsers
+} from "../../redux/users-selectors";
 
 
 type mapStateToPropsType = {
-    usersPage: InitStateType
+    users: UserType[]
     pageSize: number
     totalUsersCount: number
     currentPage: number
@@ -68,7 +76,7 @@ class UsersClass extends React.Component<UsersMapPropsType> {
             }
             <UsersComponent totalUsersCount={this.props.totalUsersCount}
                             onPageChanged={this.onPageChanged}
-                            users={this.props.usersPage.users}
+                            users={this.props.users}
                             pageSize={this.props.pageSize}
                             currentPage={this.props.currentPage}
                             follow={this.props.follow}
@@ -83,12 +91,12 @@ class UsersClass extends React.Component<UsersMapPropsType> {
 
 const mapStateToProps = (state: AppRootStateType): mapStateToPropsType => {
     return {
-        usersPage: state.usersPage,
-        pageSize: state.usersPage.pageSize,
-        totalUsersCount: state.usersPage.totalUsersCount,
-        currentPage: state.usersPage.currentPage,
-        isFetching: state.usersPage.isFetching,
-        followingInProgress: state.usersPage.followingInProgress
+        users: getUsers(state),
+        pageSize: getPageSize(state),
+        totalUsersCount: getTotalUsersCount(state),
+        currentPage: getCurrentPage(state),
+        isFetching: getIsFetching(state),
+        followingInProgress: getFollowingInProgress(state)
     }
 }
 // const mapDispatchToProps = (dispatch: (action: unfollowActionType | followActionType | setUsersActionType | setCurrentPageActionType | setTotalUsersCountActionType | toggleIsFetchingActionType) => void): mapDispatchToPropsType => {

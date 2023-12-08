@@ -67,6 +67,7 @@ export const toggleFollowingInProgressAC = (isFetching: boolean, userId: number)
 export const getUsersTC = (currentPage: number, pageSize: number): AppThunk => {
     return (dispatch) => {
         dispatch(toggleIsFetchingAC(true))
+        dispatch(setCurrentPageAC(currentPage))
         usersApi.getUsers(currentPage, pageSize)
             .then(data => {
                 dispatch(toggleIsFetchingAC(false))
