@@ -22,14 +22,11 @@ export const initializedSuccessAC = (): initializedSuccessActionType => ({
 
 // thunk creators
 export const initializeAppTC= (): AppThunk => {
-    return (dispatch) => {
-        dispatch(getAuthUserDataTC()).then(()=>{
-            dispatch(initializedSuccessAC())
-        })
+    return async (dispatch) => {
+        await dispatch(getAuthUserDataTC())
+        dispatch(initializedSuccessAC())
     }
 }
-
-
 
 
 export type InitAuthStateTypeProps = { //

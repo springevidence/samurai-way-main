@@ -10,7 +10,8 @@ const initState: ProfilePageTypeProps = {
         {id: 3, message: "Happy birthday!", likesCount: 7},
         {id: 4, message: "How to learn React JS?", likesCount: 3}
     ],
-    profile: {aboutMe: '',
+    profile: {
+        aboutMe: '',
         contacts: {
             facebook: '',
             website: null,
@@ -28,14 +29,16 @@ const initState: ProfilePageTypeProps = {
         photos: {
             small: '',
             large: ''
-        }},
+        }
+    },
     status: ''
 }
 export const profileReducer = (state: ProfilePageTypeProps = initState, action: ActionType) => {
     switch (action.type) {
         case 'ADD-POST':
             return {
-                ...state, posts: [{id: 5, message: action.newPostText, likesCount: 0}, ...state.posts]};
+                ...state, posts: [{id: 5, message: action.newPostText, likesCount: 0}, ...state.posts]
+            };
         case "SET-USER-PROFILE":
             return {...state, profile: action.profile}
         case 'SET-USER-STATUS':
@@ -61,34 +64,28 @@ export const setUserStatusAC = (status: string): setUserStatusActionType => ({
     status
 })
 //thunk creator
-export const getUserProfileTC = (userId: number): AppThunk => {
-    return (dispatch) => {
-        profileApi.getProfile(userId).then(res => {
-            dispatch(setUserProfileAC(res.data))
-        })
+export const getUserProfileTC = (userId: number): AppThunk =>
+    async (dispatch) => {
+        const res = await profileApi.getProfile(userId)
+        dispatch(setUserProfileAC(res.data))
     }
-}
 
-export const getUserStatusTC = (userId: number): AppThunk => {
-    return (dispatch) => {
-        profileApi.getStatus(userId)
-            .then(res => {
-                console.log(res)
-                dispatch(setUserStatusAC(res.data))
-            })
-    }
-}
 
-export const updateUserStatusTC = (status: string): AppThunk => {
-    return (dispatch) => {
-        profileApi.updateStatus(status)
-            .then(res => {
-                if (res.data.resultCode === 0) {
-                    dispatch(setUserStatusAC(status))
-                }
-            })
+export const getUserStatusTC = (userId: number): AppThunk =>
+    async (dispatch) => {
+        const res = await profileApi.getStatus(userId)
+        dispatch(setUserStatusAC(res.data))
     }
-}
+
+
+export const updateUserStatusTC = (status: string): AppThunk =>
+    async (dispatch) => {
+        const res = await profileApi.updateStatus(status)
+        if (res.data.resultCode === 0) {
+            dispatch(setUserStatusAC(status))
+        }
+    }
+
 
 export type UserProfileType = {
     aboutMe: string
@@ -113,7 +110,7 @@ export type UserProfileType = {
 }
 export type ProfilePageTypeProps = {
     posts: PostsType[]
-    profile: UserProfileType   //!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    profile: UserProfileType
     status: string
 }
 export type PostsType = {

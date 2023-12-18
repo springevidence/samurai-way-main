@@ -34,43 +34,36 @@ export const setAuthUserDataAC = (id: null | number, email: null | string, login
 })
 
 export type ThunkType<ReturnType = Promise<any>> = ThunkAction<ReturnType, AppRootStateType, unknown, AnyAction>
+
 // thunk creators
-export const getAuthUserDataTC = (): ThunkType => {
-    return (dispatch) => {
-        return authApi.authMe()
-            .then(res => {
-                if (res.data.resultCode === 0) {
-                    const {id, email, login, isAuth} = res.data.data
-                    dispatch(setAuthUserDataAC(id, email, login, true))
-                }
-            })
-    }
-}
+export const getAuthUserDataTC = (): ThunkType =>
+    async (dispatch) => {
+        const res = await authApi.authMe()
+        if (res.data.resultCode === 0) {
+            const {id, email, login, isAuth} = res.data.data
+            dispatch(setAuthUserDataAC(id, email, login, true))
+        }
 
-export const loginTC = (data: LoginParamsType): AppThunk => {
-    return (dispatch) => {
-        authApi.login(data)
-            .then(res => {
-                if (res.data.resultCode === 0) {
-                    dispatch(getAuthUserDataTC())
-                }
-                else {
-                    handleServerAppError(res.data, dispatch)
-                }
-            })
     }
-}
 
-export const logoutTC = (): AppThunk => {
-    return (dispatch) => {
-        authApi.logout()
-            .then(res => {
-                if (res.data.resultCode === 0) {
-                    dispatch(setAuthUserDataAC(null, null, null, false))
-                }
-            })
+export const loginTC = (data: LoginParamsType): AppThunk =>
+    async (dispatch) => {
+        const res = await authApi.login(data)
+        if (res.data.resultCode === 0) {
+            dispatch(getAuthUserDataTC())
+        } else {
+            handleServerAppError(res.data, dispatch)
+        }
     }
-}
+
+export const logoutTC = (): AppThunk =>
+    async (dispatch) => {
+        const res = await authApi.logout()
+        if (res.data.resultCode === 0) {
+            dispatch(setAuthUserDataAC(null, null, null, false))
+        }
+    }
+
 export type InitAuthStateTypeProps = { //
     id: null | number
     email: null | string
@@ -84,6 +77,6 @@ export type setUserDataActionType = {
 }
 export type setAppErrorActionType = {
     type: 'SET-APP-ERROR'
-    error:  null | string
+    error: null | string
 }
 type ActionType = setUserDataActionType | setAppErrorActionType

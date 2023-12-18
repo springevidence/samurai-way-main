@@ -1,5 +1,7 @@
 import {AppThunk} from "./redux-store";
 import {followApi, usersApi} from "../api/api";
+import {ThunkType} from "./auth-reducer";
+import {BaseResponseType} from "../components/Header/HeaderContainer";
 
 const initState: InitStateType = {
     users: [],
@@ -63,41 +65,50 @@ export const toggleFollowingInProgressAC = (isFetching: boolean, userId: number)
     isFetching,
     userId
 })
+const followUnfollowFlow = async (dispatch: (action: followActionType | unfollowActionType| toggleFollowingInProgressActionType) => void, userId: number, apiMethod: (userId: number) => Promise<BaseResponseType>, actionCreator: (userId: number) => followActionType | unfollowActionType)  => {
+    dispatch(toggleFollowingInProgressAC(true, userId))
+    const data = await apiMethod(userId)
+    if (data.resultCode === 0) {
+        dispatch(actionCreator(userId))
+    }
+    dispatch(toggleFollowingInProgressAC(false, userId))
+}
 // thunk creator
-export const getUsersTC = (currentPage: number, pageSize: number): AppThunk => {
-    return (dispatch) => {
+export const getUsersTC = (currentPage: number, pageSize: number): AppThunk =>
+    async (dispatch) => {
         dispatch(toggleIsFetchingAC(true))
         dispatch(setCurrentPageAC(currentPage))
-        usersApi.getUsers(currentPage, pageSize)
-            .then(data => {
-                dispatch(toggleIsFetchingAC(false))
-                dispatch(setUsersAC(data.items))
-                dispatch(setTotalUsersCountAC(data.totalCount))
-            })
+
+        const data = await usersApi.getUsers(currentPage, pageSize)
+        dispatch(toggleIsFetchingAC(false))
+        dispatch(setUsersAC(data.items))
+        dispatch(setTotalUsersCountAC(data.totalCount))
     }
-}
-export const followTC = (userId: number): AppThunk => {
-    return (dispatch) => {
-        dispatch(toggleFollowingInProgressAC(true, userId))
-        followApi.follow(userId)
-            .then(data => {
-                if (data.resultCode === 0) {
-                    dispatch(followAC(userId))
-                }
-                dispatch(toggleFollowingInProgressAC(false, userId))
-            })
+
+export const followTC = (userId: number): AppThunk =>
+     (dispatch) => {
+        const apiMethod = followApi.follow.bind(followApi)
+        followUnfollowFlow(dispatch, userId, apiMethod, followAC)
+
+        // dispatch(toggleFollowingInProgressAC(true, userId))
+        // const data = await followApi.follow(userId)
+        // if (data.resultCode === 0) {
+        //     dispatch(followAC(userId))
+        // }
+        // dispatch(toggleFollowingInProgressAC(false, userId))
     }
-}
+
 export const unfollowTC = (userId: number): AppThunk => {
-    return (dispatch) => {
-        dispatch(toggleFollowingInProgressAC(true, userId))
-        followApi.unfollow(userId)
-            .then(data => {
-                if (data.resultCode === 0) {
-                    dispatch(unfollowAC(userId))
-                }
-                dispatch(toggleFollowingInProgressAC(false, userId))
-            })
+    return async (dispatch) => {
+        const apiMethod = followApi.unfollow.bind(followApi)
+        followUnfollowFlow(dispatch, userId, apiMethod, unfollowAC)
+
+        // dispatch(toggleFollowingInProgressAC(true, userId))
+        // const data = await followApi.unfollow(userId)
+        // if (data.resultCode === 0) {
+        //     dispatch(unfollowAC(userId))
+        // }
+        // dispatch(toggleFollowingInProgressAC(false, userId))
     }
 }
 
