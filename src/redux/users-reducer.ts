@@ -1,7 +1,7 @@
 import {AppThunk} from "./redux-store";
 import {followApi, usersApi} from "../api/api";
-import {ThunkType} from "./auth-reducer";
 import {BaseResponseType} from "../components/Header/HeaderContainer";
+import {updateObjectInArray} from "../common/object-helpers";
 
 const initState: InitStateType = {
     users: [],
@@ -14,9 +14,12 @@ const initState: InitStateType = {
 export const usersReducer = (state: InitStateType = initState, action: ActionType): InitStateType => {
     switch (action.type) {
         case 'FOLLOW':
-            return {...state, users: state.users.map(u => u.id === action.userId ? {...u, followed: true} : u)};
+            return {...state,
+                users: updateObjectInArray(state.users, action.userId, 'id', {followed: true})
+            };
         case 'UNFOLLOW':
-            return {...state, users: state.users.map(u => u.id === action.userId ? {...u, followed: false} : u)};
+            return {...state, users: updateObjectInArray(state.users, action.userId, 'id', {followed: false})
+            };
         case 'SET_USERS':
             return {...state, users: action.users}
         case "SET_CURRENT_PAGE":
