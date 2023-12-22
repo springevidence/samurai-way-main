@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC} from 'react';
 import LoginForm from "./LoginForm";
 import {connect} from "react-redux";
 import {loginTC} from "../../redux/auth-reducer";
@@ -18,19 +18,19 @@ type mapStateToPropsType = {
     loginError: null | string | undefined
 }
 type LoginMapPropsType =  mapDispatchToPropsType & mapStateToPropsType
-const Login = (props: LoginMapPropsType) => {
+const Login: FC<LoginMapPropsType> = ({login,isAuth, loginError }) => {
     const onSubmit = (formData: FormValues) => {
-      props.login(formData)
+      login(formData)
     }
 
-    if (props.isAuth) {
+    if (isAuth) {
        return <Navigate to={'/profile'}/>
     }
 
     return (
         <div>
             <h1>Login</h1>
-            <LoginForm onSubmit={onSubmit} loginError={props.loginError}/>
+            <LoginForm onSubmit={onSubmit} loginError={loginError}/>
         </div>
 
     );

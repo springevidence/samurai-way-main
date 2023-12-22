@@ -1,11 +1,4 @@
-.selectedPage {
-    font-weight: bold;
-    cursor: pointer;
-    text-decoration: underline;
-}
-.page {
-    cursor: pointer;
-}
+
 .photo {
     width: 150px;
     height: 100px;

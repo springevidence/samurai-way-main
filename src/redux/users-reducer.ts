@@ -6,10 +6,11 @@ import {updateObjectInArray} from "../common/object-helpers";
 const initState: InitStateType = {
     users: [],
     pageSize: 30,
-    totalUsersCount: 0,
+    totalItemsCount: 0,
     currentPage: 1,
     isFetching: true,
-    followingInProgress: []
+    followingInProgress: [],
+    portionSize: 10
 }
 export const usersReducer = (state: InitStateType = initState, action: ActionType): InitStateType => {
     switch (action.type) {
@@ -25,7 +26,7 @@ export const usersReducer = (state: InitStateType = initState, action: ActionTyp
         case "SET_CURRENT_PAGE":
             return {...state, currentPage: action.currentPage}
         case "SET_TOTAL_COUNT":
-            return {...state, totalUsersCount: action.totalCount}
+            return {...state, totalItemsCount: action.totalCount}
         case "TOGGLE_IS_FETCHING":
             return {...state, isFetching: action.isFetching}
         case "TOGGLE_FOLLOWING_IN_PROGRESS":
@@ -150,7 +151,8 @@ export type toggleFollowingInProgressActionType = {
 export type InitStateType = {
     users: UserType[]
     pageSize: number
-    totalUsersCount: number
+    portionSize: number
+    totalItemsCount: number
     currentPage: number
     isFetching: boolean
     followingInProgress: number[]

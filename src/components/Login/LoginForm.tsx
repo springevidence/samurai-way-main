@@ -32,11 +32,10 @@ const LoginForm = (props: LoginFormPropsType) => {
         onSubmit={props.onSubmit}
         validate={validate}
 
-        render={({handleSubmit, submitError, error}) => (
+        render={({handleSubmit}) => (
             <form onSubmit={handleSubmit}>
                 <div>
                     <Field name={'email'}
-                           // component={Input}
                            render={({input, meta})=> (
                                <div>
                                    <label>email</label>
