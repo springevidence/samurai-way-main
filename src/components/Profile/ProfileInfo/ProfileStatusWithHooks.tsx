@@ -3,38 +3,10 @@ import React, {useEffect, useState} from 'react';
 type ProfileStatusWithHooksPropsType = {
     status: string
     updateStatus: (status: string) => void
+    isOwner: boolean
 }
 
 const ProfileStatusWithHooks = (props: ProfileStatusWithHooksPropsType) => {
-    // state = {
-    //     editMode: false,
-    //     status: this.props.status
-    // }
-    // activateEditMode = () => {
-    //     this.setState({
-    //         editMode: true
-    //     })
-    // }
-    // deactivateEditMode = () => {
-    //     this.setState({
-    //         editMode: false
-    //     })
-    //     this.props.updateStatus(this.state.status)
-    // }
-    // onStatusChange = (e: any) => {
-    //     this.setState({
-    //         status: e.currentTarget.value
-    //     })
-    // }
-    // componentDidUpdate(prevProps: Readonly<ProfileStatusPropsType>, prevState: Readonly<{}>) {
-    //     console.log('componentDidUpdate')
-    //     if (prevProps.status !== this.props.status) {
-    //         this.setState({
-    //             status: this.props.status
-    //         })
-    //     }
-    // }
-
     const [editMode, setEditMode] = useState(false)
     const [status, setStatus] = useState(props.status)
 
@@ -42,7 +14,7 @@ const ProfileStatusWithHooks = (props: ProfileStatusWithHooksPropsType) => {
         setStatus(props.status)
     }, [props.status])
     const activateEditMode = () => {
-        setEditMode(true)
+        props.isOwner && setEditMode(true)
     }
     const deactivateEditMode = () => {
         setEditMode(false)
@@ -55,7 +27,7 @@ const ProfileStatusWithHooks = (props: ProfileStatusWithHooksPropsType) => {
     return (
             <div>
                 {!editMode && <div>
-                    <span onDoubleClick={activateEditMode}>{props.status || '------'}</span>
+                    <span onDoubleClick={activateEditMode}>{props.status || 'status is coming'}</span>
                 </div>}
                 {editMode && <div>
                     <input onChange={onStatusChange} autoFocus={true} onBlur={deactivateEditMode} value={status}/>

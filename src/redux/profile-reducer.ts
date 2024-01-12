@@ -2,6 +2,7 @@ import {addMessageActionType} from "./dialogs-reducer";
 import {v1} from "uuid";
 import {AppThunk} from "./redux-store";
 import {profileApi} from "../api/api";
+import profile from "../components/Profile/Profile";
 
 const initState: ProfilePageTypeProps = {
     posts: [
@@ -43,6 +44,10 @@ export const profileReducer = (state: ProfilePageTypeProps = initState, action: 
             return {...state, profile: action.profile}
         case 'SET-USER-STATUS':
             return {...state, status: action.status}
+        case 'SAVE-PHOTO-SUCCESS':
+            debugger
+            // return {...state, profile: {...state.profile, photos: {...state.profile.photos, large: action.photoFile}}}
+        return {...state, profile: {...state.profile, photos: action.photoFile}}
         default:
             return state;
     }
@@ -63,6 +68,12 @@ export const setUserStatusAC = (status: string): setUserStatusActionType => ({
     type: 'SET-USER-STATUS',
     status
 })
+export const savePhotoSuccessAC = (photoFile: File): savePhotoSuccessActionType => ({
+    type: 'SAVE-PHOTO-SUCCESS',
+    photoFile
+})
+
+
 //thunk creator
 export const getUserProfileTC = (userId: number): AppThunk =>
     async (dispatch) => {
@@ -83,6 +94,14 @@ export const updateUserStatusTC = (status: string): AppThunk =>
         const res = await profileApi.updateStatus(status)
         if (res.data.resultCode === 0) {
             dispatch(setUserStatusAC(status))
+        }
+    }
+export const savePhotoTC = (file: File): AppThunk =>
+    async (dispatch) => {
+    debugger
+        const res = await profileApi.savePhoto(file)
+        if (res.data.resultCode === 0) {
+            dispatch(savePhotoSuccessAC(res.data.data.photos))
         }
     }
 
@@ -130,9 +149,14 @@ export type setUserStatusActionType = {
     type: 'SET-USER-STATUS'
     status: string
 }
+export type savePhotoSuccessActionType = {
+    type: 'SAVE-PHOTO-SUCCESS'
+    photoFile: File
+}
 
 type ActionType =
     addPostActionType
     | addMessageActionType
     | setUserProfileActionType
     | setUserStatusActionType
+    | savePhotoSuccessActionType

@@ -1,9 +1,9 @@
-import React, {ComponentType, FC, useEffect} from 'react';
+import React, {ComponentType} from 'react';
 import Profile from "./Profile";
 import {connect} from "react-redux";
 import {AppRootStateType} from "../../redux/redux-store";
 import {
-    getUserProfileTC, getUserStatusTC, savePhotoTC,
+    getUserProfileTC, getUserStatusTC,
     setUserProfileAC, updateUserStatusTC,
     UserProfileType
 } from "../../redux/profile-reducer";
@@ -19,54 +19,61 @@ import {useParams} from "react-router-dom";
 //     }
 // }
 
-const ProfileContainer: FC<UsersMapPropsType> = (props) => {
+class ProfileContainer extends React.Component<UsersMapPropsType> {
+
+    refreshProfile() {
         // let userId = this.props.match.params.userId
         // let userId = this.props.profile.userId
-        // let userId = Number(window.location.href.split('/')[5])
-    let params  = useParams()
-    let userId: number | null = Number(params.userId)
 
-    useEffect(() => {
+        let userId = Number(window.location.href.split('/')[5])
         if (!userId) {
-            userId = props.authorizedId
+            userId = 1
         }
-        if (userId) {
-            props.getUserProfile(userId)
-            props.getUserStatus(userId)
+
+        this.props.getUserProfile(userId)
+        this.props.getUserStatus(userId)
+    }
+
+    componentDidMount() {
+        this.refreshProfile()
+    }
+
+    componentDidUpdate(prevProps: Readonly<UsersMapPropsType>, prevState: Readonly<{}>, snapshot?: any) {
+        // debugger
+        let userId = Number(window.location.href.split('/')[5])
+        if (userId != prevProps.profile.userId) {
+            this.refreshProfile()
         }
-    }, [userId])
+    }
 
-
-    return (
-        <div>
-            <Profile isOwner={!userId}
-                     users={props.users}
-                     profile={props.profile}
-                     status={props.status}
-                     updateStatus={props.updateUserStatus}
-                     savePhoto={props.savePhoto}
-            />
-        </div>
-    );
-
+    render() {
+        return (
+            <div>
+                {/*<Profile users={this.props.users} profile={this.props.profile} status={this.props.status}*/}
+                {/*         updateStatus={this.props.updateUserStatus}/>*/}
+            </div>
+        );
+    }
 }
 
 const AuthRedirectComponent = WithAuthRedirect(ProfileContainer)
 const mapStateToProps = (state: AppRootStateType): mapStateToPropsType => ({
-    // profile: state.profilePage.profile,
     profile: state.profilePage['profile'],
-    // status: state.profilePage.status,
     status: state.profilePage['status'],
-    users: state.usersPage.users,
-    authorizedId: state.auth.id
+    users: state.usersPage.users
 })
-
+// const mapDispatchToProps = (dispatch: (action: setUserProfileActionType) => void): mapDispatchToPropsType => {
+//     return {
+//         setUserProfile: (profile: UserProfileType) => {
+//             dispatch(setUserProfileAC(profile))
+//         }
+//     }
+// }
 const MapObj = {
     setUserProfile: setUserProfileAC,
     getUserProfile: getUserProfileTC,
     getUserStatus: getUserStatusTC,
-    updateUserStatus: updateUserStatusTC,
-    savePhoto: savePhotoTC
+    updateUserStatus: updateUserStatusTC
 }
 
 // types
@@ -74,14 +81,12 @@ type mapStateToPropsType = {
     profile: UserProfileType
     status: string
     users: UserType[]
-    authorizedId: number | null
 }
 type mapDispatchToPropsType = {
     setUserProfile: (profile: UserProfileType) => void
     getUserProfile: (userId: number) => void
     getUserStatus: (userId: number) => void
     updateUserStatus: (status: string) => void
-    savePhoto: (file: File) => void
 }
 export type UsersMapPropsType = mapStateToPropsType & mapDispatchToPropsType
 

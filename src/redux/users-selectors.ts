@@ -1,5 +1,6 @@
 import {createSelector} from "reselect";
 import {AppRootStateType} from "./redux-store";
+import exp from "constants";
 
 const getUsersSelector = (state: AppRootStateType) => {
     return state.usersPage.users
@@ -25,4 +26,8 @@ export const getIsFetching = (state: AppRootStateType) => {
 }
 export const getFollowingInProgress = (state: AppRootStateType) => {
     return state.usersPage.followingInProgress
+}
+export const getProfile = (state: AppRootStateType) => {
+    // return state.profilePage.profile
+    return state.profilePage['profile']
 }

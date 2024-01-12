@@ -4,6 +4,7 @@ import {UserType} from "../../redux/store";
 import {NavLink} from "react-router-dom";
 import Paginator from "../common/Paginator/Paginator";
 import User from "./User";
+import {UserProfileType} from "../../redux/profile-reducer";
 
 type UsersComponentPropsType = {
     onPageChanged: (page: number) => void
@@ -17,6 +18,7 @@ type UsersComponentPropsType = {
     followingInProgress: number[]
     unfollowUser: (userId: number) => void
     followUser: (userId: number) => void
+    profile: UserProfileType
 }
 const Users = (props: UsersComponentPropsType) => {
 
@@ -32,7 +34,8 @@ const Users = (props: UsersComponentPropsType) => {
                                         user={u}
                                         unfollowUser={props.unfollowUser}
                                         followUser={props.followUser}
-                                        followingInProgress={props.followingInProgress}/>)}
+                                        followingInProgress={props.followingInProgress}
+                                        profile={props.profile}/>)}
 
         </div>
     );
