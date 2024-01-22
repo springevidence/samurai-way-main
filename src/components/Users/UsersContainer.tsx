@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC, useEffect} from 'react';
 import {connect} from "react-redux";
 import {UserType} from "../../redux/store";
 import {
@@ -44,38 +44,35 @@ type mapDispatchToPropsType = {
 
 export type UsersMapPropsType = mapStateToPropsType & mapDispatchToPropsType
 
-class UsersClass extends React.Component<UsersMapPropsType> {
-    componentDidMount() {
-        const {currentPage, pageSize} = this.props
-        this.props.getUsers(currentPage, pageSize)
-    }
+const UsersComponent = (props: UsersMapPropsType) => {
 
-    onPageChanged = (pageNumber: number)=> {
-        const {pageSize} = this.props
-        this.props.getUsers(pageNumber, pageSize)
-    }
+    useEffect(() => {
+        const {currentPage, pageSize} = props
+        props.getUsers(currentPage, pageSize)
+    }, [])
 
-    render() {
-        return <>
-            {this.props.isFetching
-                ? <Preloader/>
-                : null
-            }
-            <Users totalItemsCount={this.props.totalItemsCount}
-                   onPageChanged={this.onPageChanged}
-                   users={this.props.users}
-                   pageSize={this.props.pageSize}
-                   currentPage={this.props.currentPage}
-                   follow={this.props.follow}
-                   unfollow={this.props.unfollow}
-                   followingInProgress={this.props.followingInProgress}
-                   unfollowUser={this.props.unfollowUser}
-                   followUser={this.props.followUser}
-                   portionSize={this.props.portionSize}
-                   profile={this.props.profile}
+    const onPageChanged = (pageNumber: number) => {
+        const {pageSize} = props
+        props.getUsers(pageNumber, pageSize)
+    }
+    return (
+        <div>
+            {props.isFetching? <Preloader/> : null}
+            <Users totalItemsCount={props.totalItemsCount}
+                   onPageChanged={onPageChanged}
+                   users={props.users}
+                   pageSize={props.pageSize}
+                   currentPage={props.currentPage}
+                   follow={props.follow}
+                   unfollow={props.unfollow}
+                   followingInProgress={props.followingInProgress}
+                   unfollowUser={props.unfollowUser}
+                   followUser={props.followUser}
+                   portionSize={props.portionSize}
+                   profile={props.profile}
             />
-        </>
-    }
+        </div>
+    )
 }
 
 const mapStateToProps = (state: AppRootStateType): mapStateToPropsType => {
@@ -125,5 +122,5 @@ const MapObj = {
 }
 // export const UsersContainer = connect(mapStateToProps, mapDispatchToProps)(Users);
 // export const UsersContainer = connect(mapStateToProps, mapDispatchToProps)(UsersClass);
-const UsersContainer = connect(mapStateToProps, MapObj)(UsersClass);
+const UsersContainer = connect(mapStateToProps, MapObj)(UsersComponent);
 export default UsersContainer

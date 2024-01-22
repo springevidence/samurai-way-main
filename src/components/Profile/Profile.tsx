@@ -11,6 +11,7 @@ type ProfilePropsType = {
     users: UserType[]
     isOwner: boolean
     savePhoto: (file: File) => void
+    saveProfile: (profile: UserProfileType) => void
 }
 
 const Profile = (props: ProfilePropsType) => {
@@ -22,6 +23,7 @@ const Profile = (props: ProfilePropsType) => {
                          updateStatus={props.updateStatus}
                          users={props.users}
                          savePhoto={props.savePhoto}
+                         saveProfile={props.saveProfile}
             />
             <MyPostsContainer/>
         </div>

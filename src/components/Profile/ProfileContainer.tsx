@@ -3,7 +3,7 @@ import Profile from "./Profile";
 import {connect} from "react-redux";
 import {AppRootStateType} from "../../redux/redux-store";
 import {
-    getUserProfileTC, getUserStatusTC, savePhotoTC,
+    getUserProfileTC, getUserStatusTC, savePhotoTC, saveProfileTC,
     setUserProfileAC, updateUserStatusTC,
     UserProfileType
 } from "../../redux/profile-reducer";
@@ -45,6 +45,7 @@ const ProfileContainer: FC<UsersMapPropsType> = (props) => {
                      status={props.status}
                      updateStatus={props.updateUserStatus}
                      savePhoto={props.savePhoto}
+                     saveProfile={props.saveProfile}
             />
         </div>
     );
@@ -66,7 +67,8 @@ const MapObj = {
     getUserProfile: getUserProfileTC,
     getUserStatus: getUserStatusTC,
     updateUserStatus: updateUserStatusTC,
-    savePhoto: savePhotoTC
+    savePhoto: savePhotoTC,
+    saveProfile: saveProfileTC
 }
 
 // types
@@ -82,6 +84,7 @@ type mapDispatchToPropsType = {
     getUserStatus: (userId: number) => void
     updateUserStatus: (status: string) => void
     savePhoto: (file: File) => void
+    saveProfile: (profile: UserProfileType) => void
 }
 export type UsersMapPropsType = mapStateToPropsType & mapDispatchToPropsType
 

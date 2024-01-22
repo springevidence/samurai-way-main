@@ -19,7 +19,7 @@ export const usersApi = {
 }
 
 export const profileApi = {
-    getProfile(userId: number) {
+    getProfile(userId: number | null) {
         return instance.get<UserProfileType>(`profile/${userId}`)
     },
     getStatus(userId: number){
@@ -36,6 +36,9 @@ export const profileApi = {
                 'Content-Type': 'multipart/form-data'
             }
         })
+    },
+    saveProfile(profile: UserProfileType) {
+        return instance.put('profile', profile)
     }
 }
 

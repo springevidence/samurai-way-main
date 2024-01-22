@@ -1,6 +1,5 @@
 import React from 'react';
 import { Form, Field } from 'react-final-form'
-import Input from "../common/FormsValidation/FormsValidation";
 import {FormValues} from "./Login";
 
 type LoginFormPropsType = {
@@ -9,7 +8,7 @@ type LoginFormPropsType = {
 }
 const LoginForm = (props: LoginFormPropsType) => {
 
-    type FormErrorType = {
+     type FormErrorType = {
         email?: string
         password?: string
         rememberMe?: boolean

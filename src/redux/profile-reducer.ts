@@ -2,7 +2,7 @@ import {addMessageActionType} from "./dialogs-reducer";
 import {v1} from "uuid";
 import {AppThunk} from "./redux-store";
 import {profileApi} from "../api/api";
-import profile from "../components/Profile/Profile";
+import {handleServerAppError} from "../common/utills/handle-server-app-error";
 
 const initState: ProfilePageTypeProps = {
     posts: [
@@ -15,7 +15,7 @@ const initState: ProfilePageTypeProps = {
         aboutMe: '',
         contacts: {
             facebook: '',
-            website: null,
+            website: '',
             vk: '',
             twitter: '',
             instagram: '',
@@ -45,9 +45,7 @@ export const profileReducer = (state: ProfilePageTypeProps = initState, action: 
         case 'SET-USER-STATUS':
             return {...state, status: action.status}
         case 'SAVE-PHOTO-SUCCESS':
-            debugger
-            // return {...state, profile: {...state.profile, photos: {...state.profile.photos, large: action.photoFile}}}
-        return {...state, profile: {...state.profile, photos: action.photoFile}}
+            return {...state, profile: {...state.profile, photos: action.photoFile}}
         default:
             return state;
     }
@@ -75,7 +73,7 @@ export const savePhotoSuccessAC = (photoFile: File): savePhotoSuccessActionType 
 
 
 //thunk creator
-export const getUserProfileTC = (userId: number): AppThunk =>
+export const getUserProfileTC = (userId: number | null): AppThunk =>
     async (dispatch) => {
         const res = await profileApi.getProfile(userId)
         dispatch(setUserProfileAC(res.data))
@@ -98,26 +96,29 @@ export const updateUserStatusTC = (status: string): AppThunk =>
     }
 export const savePhotoTC = (file: File): AppThunk =>
     async (dispatch) => {
-    debugger
         const res = await profileApi.savePhoto(file)
         if (res.data.resultCode === 0) {
             dispatch(savePhotoSuccessAC(res.data.data.photos))
         }
     }
+export const saveProfileTC = (profile: UserProfileType): AppThunk =>
+    async (dispatch, getState) => {
+        const userId = getState().auth.id
+        const res = await profileApi.saveProfile(profile)
+        // debugger
+        if (res.data.resultCode === 0) {
+            debugger
+            dispatch(getUserProfileTC(userId))
+        }
+        // else {
+        //     handleServerAppError(res.data, dispatch)
+        // }
+    }
 
 
 export type UserProfileType = {
     aboutMe: string
-    contacts: {
-        facebook: string
-        website: null
-        vk: string
-        twitter: string
-        instagram: string
-        youtube: null
-        github: string
-        mainLink: null
-    },
+    contacts: ContactsType
     lookingForAJob: boolean
     lookingForAJobDescription: string
     fullName: string
@@ -126,6 +127,17 @@ export type UserProfileType = {
         small: string
         large: string
     }
+}
+
+export type ContactsType = {
+    facebook: string | null
+    website: string | null
+    vk: string | null
+    twitter: string | null
+    instagram: string | null
+    youtube: string | null
+    github: string | null
+    mainLink: string | null
 }
 export type ProfilePageTypeProps = {
     posts: PostsType[]
@@ -153,6 +165,7 @@ export type savePhotoSuccessActionType = {
     type: 'SAVE-PHOTO-SUCCESS'
     photoFile: File
 }
+
 
 type ActionType =
     addPostActionType
