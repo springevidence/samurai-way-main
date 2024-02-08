@@ -1,5 +1,6 @@
 import React, {lazy, useEffect} from 'react';
-import './App.css';
+import s from './App.module.css';
+import './App.module.css';
 import Navbar from "./components/Navbar/Navbar";
 import {Routes, Route} from "react-router-dom";
 import HeaderContainer from "./components/Header/HeaderContainer";
@@ -16,33 +17,34 @@ const Settings = lazy(() => import('./components/Settings/Settings'));
 const News = lazy(() => import('./components/News/News'));
 const UsersContainer = lazy(() => import('./components/Users/UsersContainer'));
 
+
 const App = (props: UsersMapPropsType) => {
 
     useEffect(()=> {
         props.initializeApp()
     },[])
 
-
     if (!props.isInitialized) {
         return <Preloader/>
     }
 
     return (
-            <div className="app-wrapper">
+            <div className={s.appWrapper}>
                 <HeaderContainer/>
-                <Navbar/>
-                <div className="app-wrapper-content">
-                    <Routes>
-                        {/*<Route path="/profile/:userId?" element={<ProfileContainer/>}/>*/}
-                        <Route path="/profile/:userId?" element={withSuspense(ProfileContainer)}/>
-                        <Route path="/dialogs" element={withSuspense(DialogsContainer)}/>
-                        <Route path="/users" element={withSuspense(UsersContainer)}/>
-                        <Route path="/new" element={withSuspense(News)}/>
-                        <Route path="/music" element={withSuspense(Music)}/>
-                        <Route path="/settings" element={withSuspense(Settings)}/>
-                        <Route path="/login" element={withSuspense(Login)}/>
-                    </Routes>
+                <div className={s.appContainer}>
+                    <Navbar/>
+                    <div className={s.appWrapperContent}>
+                        <Routes>
+                            <Route path="/profile/:userId?" element={withSuspense(ProfileContainer)}/>
+                            <Route path="/dialogs" element={withSuspense(DialogsContainer)}/>
+                            <Route path="/users" element={withSuspense(UsersContainer)}/>
+                            <Route path="/new" element={withSuspense(News)}/>
+                            <Route path="/music" element={withSuspense(Music)}/>
+                            <Route path="/settings" element={withSuspense(Settings)}/>
+                            <Route path="/login" element={withSuspense(Login)}/>
+                        </Routes>
 
+                    </div>
                 </div>
             </div>
         );

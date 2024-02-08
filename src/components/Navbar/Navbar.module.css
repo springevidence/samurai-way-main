@@ -1,12 +1,26 @@
 .nav {
-    grid-area: n;
-    background-color: blueviolet;
+    background-color: white;
     padding: 20px;
+    margin: 60px 20px;
+    border-radius: 15px;
+    width: 180px;
+    color: #363c42;
+    font-family: 'Comfortaa', cursive;
+    font-size: 20px;
+}
+
+.item {
+    padding-bottom: 10px;
 }
 .item a {
     text-decoration: none;
-    color: white;
 }
-.item a.activeLink {
-    color: yellow;
+.item a:visited {
+    color: #f75411;
+}
+.item a:active {
+    color: #f1f2f4;;
+}
+.item a.active {
+    color: #363c42;
 }

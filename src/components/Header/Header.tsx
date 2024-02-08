@@ -7,16 +7,21 @@ type HeaderPropsType = {
     login: string | null
     logout: () => void
 }
-const Header = (props:HeaderPropsType) => {
+const Header = (props: HeaderPropsType) => {
     return (
-            <header  className={s.header}>
-                <img src="https://seeklogo.com/images/C/company-name-logo-09881CAD1A-seeklogo.com.png" alt="logo"/>
-                <div className={s.loginBlock}>
-                    {props.isAuth
-                        ? <div>{props.login} - <button onClick={props.logout}>Log out</button></div>
-                        : <NavLink to={'/login'}>Login</NavLink>}
-                </div>
-            </header>
+        <header className={s.header}>
+            <div className={s.imageBlock}>
+                <img src="" alt="logo"/>
+            </div>
+            <div className={s.loginBlock}>
+                {props.isAuth
+                    ? <div className={s.loginNameBlock}>
+                        <div className={s.loginName}>{props.login}</div>
+                        <button onClick={props.logout}>Log out</button>
+                    </div>
+                    : <NavLink to={'/login'}>Login</NavLink>}
+            </div>
+        </header>
     );
 };
 
